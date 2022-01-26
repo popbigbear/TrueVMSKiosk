@@ -1,0 +1,1357 @@
+﻿<Window xmlns:Controls="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit" x:Class="TrueVMS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:WPF="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"          
+        xmlns:gif="http://wpfanimatedgif.codeplex.com" 
+        xmlns:local="clr-namespace:TrueVMS"
+        mc:Ignorable="d"
+        Title="True VMS System" Height="1024" Width="1280"
+        
+        Closing="Window_Closing"
+        Loaded="Window_Loaded"    
+        
+        Icon="Resources/Icon/logo_icon.ico"
+        
+        WindowStyle="None"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        >
+
+    <Window.Resources>
+        <ImageBrush x:Key="ButtonWalkinImage" ImageSource="/Resources/Button/EntryRedBtn.png"></ImageBrush>
+        <ImageBrush x:Key="ButtonCustomerImage" ImageSource="/Resources/Button/EntryRedBtn.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonCustomer">
+            <Setter Property="Background" Value="{StaticResource ButtonCustomerImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonWalkin">
+            <Setter Property="Background" Value="{StaticResource ButtonWalkinImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <ImageBrush x:Key="ButtonReturnCardImage" ImageSource="/Resources/Button/EntryBlackBtn.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonReturnCard">
+            <Setter Property="Background" Value="{StaticResource ButtonReturnCardImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <ImageBrush x:Key="ButtonFlagEngImage" ImageSource="/Resources/Flag/engFlag100.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonFlagEng">
+            <Setter Property="Background" Value="{StaticResource ButtonFlagEngImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ImageBrush x:Key="ButtonFlagThaiImage" ImageSource="/Resources/Flag/thaiFlag100.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonFlagThai">
+            <Setter Property="Background" Value="{StaticResource ButtonFlagThaiImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ImageBrush x:Key="ButtonBackImage" ImageSource="/Resources/Button/btnBack.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonBack">
+            <Setter Property="Background" Value="{StaticResource ButtonBackImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+
+
+
+        <ImageBrush x:Key="ButtonNextImage" ImageSource="/Resources/Button/btnNext.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonNext">
+            <Setter Property="Background" Value="{StaticResource ButtonNextImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ImageBrush x:Key="ButtonTCNextImage" ImageSource="/Resources/Button/btTCNext.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonTCNext">
+            <Setter Property="Background" Value="{StaticResource ButtonTCNextImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ImageBrush x:Key="ButtonAcceptImage" ImageSource="/Resources/Button/btnAccept.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonAccept">
+            <Setter Property="Background" Value="{StaticResource ButtonAcceptImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ImageBrush x:Key="ButtonSkipImage" ImageSource="/Resources/Button/btnSkip.png"></ImageBrush>
+        <Style TargetType="{x:Type Button}" x:Key="ButtonSkip">
+            <Setter Property="Background" Value="{StaticResource ButtonSkipImage}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+
+
+        <ImageBrush x:Key="ListBgImage" ImageSource="/Resources/Screen051/ListBackground.png"></ImageBrush>
+        <ImageBrush x:Key="ListItemSelectedBgImage" ImageSource="/Resources/Screen051/ListItemRed.png" Opacity="1"></ImageBrush>
+        <ImageBrush x:Key="ListItemNotSelectBgImage" ImageSource="/Resources/Screen051/ListItemGray.png"  Opacity="0.8"></ImageBrush>
+        
+        <ImageBrush x:Key="FullKeyboardBgImage" ImageSource="/Resources/Keyboard/FullKeyboardBackground.png"></ImageBrush>
+        <ImageBrush x:Key="FullKeyPadBgImage" ImageSource="/Resources/Keyboard/keyButtonBackground.png" ></ImageBrush>
+        <Style x:Key="FullKeypadBtn" TargetType="{x:Type Button}">
+            <Setter Property="FontSize"  Value="36" />
+            <Setter Property="FontFamily" Value="Anuyart Regular" />
+            <Setter Property="FontWeight" Value="Normal"/>
+
+            <Setter Property="Background" Value="{StaticResource FullKeyPadBgImage}"  ></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+
+            <EventSetter Event="Click" Handler="key_Click" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"  BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                                <!-- If we don't tell the background to change on hover, it will remain the same -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="KeypadBtn" TargetType="{x:Type Button}">
+            <Setter Property="FontSize"  Value="32" />
+            <Setter Property="FontFamily" Value="Anuyart Regular" />
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Background" Value="{StaticResource FullKeyPadBgImage}"></Setter>
+
+
+            <EventSetter Event="Click" Handler="keypad_Click" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand" />
+                                <!-- If we don't tell the background to change on hover, it will remain the same -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+
+        </Style>
+
+        <!--Toggle Button Template-->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid x:Name="gd">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" SnapsToDevicePixels="True" Grid.ColumnSpan="2" Background="Transparent"  BorderBrush="Black" BorderThickness="0,0,0,1"/>
+                <Border x:Name="Boredr1" SnapsToDevicePixels="True" Grid.Column="1"  Margin="1" Background="Transparent" BorderBrush="Black" BorderThickness="0,0,0,0" />
+                <Path x:Name="Arrow" SnapsToDevicePixels="True" Grid.Column="1" Fill="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 12 12 L 24 0 Z"/>
+                <ContentPresenter Grid.Column="0" TextElement.Foreground="Orange"></ContentPresenter>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
+                    <Setter TargetName="Boredr1" Property="BorderBrush" Value="Black"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter TargetName="Arrow" Property="Data" Value="M 0 0 L 12 12 L 24 0"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="gray"/>
+                    <Setter TargetName="Arrow" Property="Stroke" Value="gray"/>
+                    <Setter TargetName="Arrow" Property="StrokeThickness" Value="1.5"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="gd" Property="Visibility" Value="Visible"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!--TextBox Template-->
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" />
+        </ControlTemplate>
+
+        <!--combobox-->
+        <Style x:Key="combobox_style" TargetType="ComboBox">
+            <Setter Property="FontSize"  Value="32" />
+            <Setter Property="FontFamily" Value="Anuyart Regular" />
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="Gray"/>            
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate  TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton" Foreground="Black" Template="{StaticResource ComboBoxToggleButton}" Focusable="false" 
+                                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press">
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" 
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,23,3"  
+                                              VerticalAlignment="Center" HorizontalAlignment="Left"  />
+                            <TextBox OverridesDefaultStyle="True" SelectionBrush="Gray" CaretBrush="Black" Margin="0,0,30,0" TextWrapping="NoWrap"   x:Name="PART_EditableTextBox" FontFamily="Anuyart Regular" 
+                                     Foreground="Black" Style="{x:Null}" Template="{StaticResource ComboBoxTextBox}" HorizontalAlignment="Left" 
+                                     Focusable="True"  VerticalAlignment="Center"  FontSize="15"   Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup Name="Popup"  Grid.ColumnSpan="2" Placement="Bottom"  IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid Name="DropDown"   SnapsToDevicePixels="True" MaxWidth="{TemplateBinding ActualWidth}" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="DropDownBorder" SnapsToDevicePixels="True" Background="Transparent" MaxWidth="{TemplateBinding ActualWidth}" BorderThickness="1" BorderBrush="Black"/>
+                                    <ScrollViewer Grid.ColumnSpan="2" ScrollViewer.CanContentScroll="False" Grid.Row="1" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" Background="White">
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter  TargetName="PART_EditableTextBox" Property="Background" Value="White"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Foreground" Value="Black"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Foreground" Value="Black"/>
+                                <Setter  TargetName="PART_EditableTextBox" Property="IsEnabled" Value="False"/>
+                                <Setter  TargetName="PART_EditableTextBox" Property="Background" Value="White"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="ListItemStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="FontSize" Value="24" />
+        </Style>
+
+        <Style x:Key="Style2"
+       TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="FontSize"  Value="36" />
+            <Setter Property="FontFamily" Value="Anuyart Regular" />
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Border" Property="Background"
+                                            Value="{StaticResource ListItemSelectedBgImage }"/>
+                            </Trigger>
+
+                            <Trigger Property="IsSelected" Value="false">
+                                <Setter TargetName="Border" Property="Background"
+                                            Value="{StaticResource ListItemNotSelectBgImage  }"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+
+                </Setter.Value>
+            </Setter>
+            
+            
+        </Style>
+        
+
+    </Window.Resources>
+    <Grid>
+
+        <!-- Screen 000 :::: Sreen Saver-->
+        <StackPanel HorizontalAlignment="Left" Height="1024" Margin="0,0,0,0" VerticalAlignment="Top" Width="1280" Name="panelScreenSaver" 
+                    TouchDown="panelScreenSaver_TouchDown" Background="AliceBlue"  MouseLeftButtonDown="panelScreenSaver_MouseDown"
+                    IsVisibleChanged="panelScreenSaver_IsVisibleChanged">
+
+            <!-- The MediaElement control plays the sound. -->
+
+            <MediaElement Name="homeVideo" Loaded="homeVideo_Loaded" MediaEnded="homeVideo_MediaEnded"  MediaFailed="homeVideo_MediaFailed_1"   
+                          Margin="0,0"  Width="1280" Height="1024"  LoadedBehavior="Manual" Stretch="Fill" StretchDirection="Both" >
+              
+            </MediaElement>
+
+
+            <!--
+            <Label x:Name="lblTouch" Margin="0,500,0,0" Content="แตะที่หน้าจอเพื่อเข้าสู่ระบบ" FontWeight="Bold" Foreground="#13488c" MouseLeftButtonDown="panelScreenSaver_MouseDown" Panel.ZIndex="9" FontSize="35" HorizontalAlignment="Center" />
+             
+            !-->
+
+            <!--
+            <Controls:MediaUriElement x:Name="homeVideo" Margin="0,0"  Width="1280" Height="1024" MediaFailed="homeVideo_MediaFailed"/>
+            -->
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="1280" Name="panelHeader">
+
+            <Image Source="/Resources/Logo/logo.png" Panel.ZIndex="10" Width="173" Height="53" HorizontalAlignment="Left"  Margin="5,10,0,0" Stretch="Fill" MouseDown="Image_MouseDown" TouchDown="Image_TouchDown"></Image>
+
+            <Label x:Name="lblHeaderTimeText" Content="ท่านมีเวลาดำเนินการ                วินาที" Width="400px" Margin="970,-40,20,0" Foreground="#777879" Height="42" HorizontalAlignment="Left" FontSize="22" />
+            <Label x:Name="lblHeaderTimeout" Content="00:30" Width="200px" Height="42" Foreground="#ed1c24" Margin="1150,-41,20,0" HorizontalAlignment="Left" FontSize="22" />
+
+
+            
+        </StackPanel>
+
+
+        <StackPanel HorizontalAlignment="Left" Height="40" VerticalAlignment="top" Margin="0,984,0,0"  Width="1280" Name="panelFotter" Background="Black" Panel.ZIndex="100">
+            <Label x:Name="lblProgramInfo" Content="True VMS System Version 1.0 Last Update 12 Aug 2021" Margin="0,0,0,0" HorizontalAlignment="Left"
+                           VerticalAlignment="Top" HorizontalContentAlignment="Left" Width="500px" Height="42" Foreground="#ffffff" 
+                    FontSize="16" />
+
+            <Label x:Name="lblTime" Content="12 Sep 2021 18:29" Width="300px" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-43,0,0"
+                           HorizontalContentAlignment="Right" Height="42" Foreground="#ffffff" FontSize="16" />
+        </StackPanel>
+
+
+
+        <!-- Screen 010 :::: Selection customer type -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelEntry" IsVisibleChanged="panelEntry_IsVisibleChanged">
+            <Label Name="lblTitle" Content="กรุณาเลือกประเภทการใช้งาน" Margin="0,200,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+            <Button x:Name="btnCustomer" Margin="0,0,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnCustomer_TouchDown" Click="btnCustomer_Click"  Width="718" Height="142" Style="{StaticResource ButtonCustomer}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/EntryRedBtn.png"/>
+                </Button.Background>
+
+            </Button>
+
+            <!--  Click="btnWalkin_Click"  -->
+            <Button x:Name="btnWalkin" Margin="0,0,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                     TouchDown="btnWalkin_TouchDown" Click="btnWalkin_Click"  Width="718" Height="142" Style="{StaticResource ButtonWalkin}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/EntryRedBtn.png"/>
+                </Button.Background>
+
+            </Button>
+
+            <!-- Click="btnReturnCard_Click" TouchDown="btnReturnCard_TouchDown" -->
+            <Button x:Name="btnReturnCard" Margin="-950,177,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                TouchDown="btnReturnCard_TouchDown" Click="btnReturnCard_Click"  Width="191" Height="73" Style="{StaticResource ButtonReturnCard}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/EntryBlackBtn.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnFlagEng" Margin="900,-70,0,0" BorderThickness="0" HorizontalContentAlignment="Left"
+                    TouchDown="btnFlagEng_TouchDown"  Width="71" Height="71" Style="{StaticResource ButtonFlagEng}"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Flag/engFlag100.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnFlagThai" Margin="1100,-70,0,0" BorderThickness="0" HorizontalContentAlignment="Left"
+                    TouchDown="btnFlagThai_TouchDown"  Width="71" Height="71" Style="{StaticResource ButtonFlagThai}"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Flag/thaiFlag100.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+        </StackPanel>
+
+
+        <!-- Screen 020 :::: Entry id-card / passport -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" TouchDown="panelEnterIDCardOrPassport_TouchDown" Name="panelEnterIDCardOrPassport"  IsVisibleChanged="panelEnterIDCardOrPassport_IsVisibleChanged">
+            <Label Name="lblEnterIDCardOrPassportTitle" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblEnterIDCardOrPassportDesc" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <ComboBox Name="cmbObjective" Margin="0,30,0,0" Style="{StaticResource combobox_style}"  Height="70" Width="500" HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" VerticalContentAlignment="Center"  >
+
+                <ComboBoxItem Content="กรุณาระบุวัตถุประสงค์ในการเข้าพื้นที่"/>
+                <ComboBoxItem Content="Xamarin"/>
+                <ComboBoxItem Content="MVC"/>
+                <ComboBoxItem Content="Angular"/>
+            </ComboBox>
+
+
+
+            <Label Name="lblIDCardNumber" Margin="0,30,0,0" Foreground="Gray"  TouchDown="lblIDCardNumber_TouchDown"   FontSize="46" HorizontalContentAlignment="Center" />
+
+
+            <Line X1="400" Y1="2" X2="900" Y2="2" Stroke="Gray" StrokeThickness="1" />
+
+            <Button x:Name="btnHome1" Margin="-950,349,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelEnterIDCardOrPassport" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelEnterIDCardOrPassport_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+
+        <!-- Screen 030 :::: T&C -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelTC" 
+                    IsVisibleChanged="panelTC_IsVisibleChanged">
+            <Label Name="lblTitlepanelTC" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+            <Border BorderBrush="#FF000000" BorderThickness="0"  CornerRadius="8"  Width="950" Height="520" Name="borderTc" >
+                <Border.Background>
+                    <ImageBrush ImageSource="Resources/Screen030/TCPopBckground.png"/>
+                </Border.Background>
+            <WPF:HtmlPanel x:Name="lblTCPopup" Height="340" Margin="0,-70,0,0" Background="White"  Width="800">
+                
+            </WPF:HtmlPanel>
+
+            </Border>
+
+
+            <Button x:Name="btnHome2" Margin="-950,110,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+            <Button x:Name="btnNext_panelTC" Margin="721,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelTC_TouchDown"  Content="ยอมรับเงื่อนไขและดำเนินการต่อ" Width="420" Height="73" Style="{StaticResource ButtonTCNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btTCNext.png"/>
+                </Button.Background>
+
+            </Button>
+            
+        </StackPanel>
+
+
+
+        <!-- Screen 040 :::: Scan QR or Entry OTP -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelScanQR" TouchDown="panelScanQR_TouchDown" IsVisibleChanged="panelScanQR_IsVisibleChanged">
+            <Label Name="lblTitlepanelScanQR" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+            <Image gif:ImageBehavior.AnimatedSource="Resources/Asset/scanQR.gif"  Panel.ZIndex="13" Margin="50,30,0,0" Visibility="Visible" Name="imgProcessing" Width="250" Height="250" />
+
+            <TextBox Name="readQRCode" Margin="-300,0,0,0"    Foreground="Transparent" BorderBrush="Transparent" BorderThickness="0" Background="Transparent"   FontSize="16"  KeyDown="readQRCode_KeyDown" />
+            <Label Name="lblOTPpanelScanQR" Margin="0,-30,0,0" Foreground="Gray"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblOTPpanelScanQR_TouchDown" />
+            <Line X1="400" Y1="2" X2="900" Y2="2" Stroke="Gray" StrokeThickness="1" />
+
+            <Label Name="lblRequestNewOTP" Margin="0,30,0,0" Foreground="Red"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblRequestNewOTP_TouchDown" />
+
+
+            <Button x:Name="btnHome3" Margin="-950,132,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelScanQR" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelScanQR_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+
+        <!-- Screen 050 ::: Resend QR Code by Email/SMS -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelResendQR"  IsVisibleChanged="panelResendQR_IsVisibleChanged">
+            <Label Name="lblTitlepanelResendQR" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelResendQR2" Content="" Margin="0,15,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelResendQR3" Margin="0,15,0,0"  FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <Button x:Name="btnResendQRByEmail" Margin="0,0,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnResendQRByEmail_TouchDown"  Width="718" Height="142" Style="{StaticResource ButtonCustomer}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/EntryRedBtn.png"/>
+                </Button.Background>
+
+            </Button>
+
+            <Button x:Name="btnResendQRBySMS" Margin="0,0,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnResendQRBySMS_TouchDown"  Width="718" Height="142" Style="{StaticResource ButtonWalkin}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/EntryRedBtn.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+            <Button x:Name="btnHome4" Margin="-950,177,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+        <!-- Screen 051 ::: Select Project -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" 
+                    Name="panelSelectProject"  IsVisibleChanged="panelSelectProject_IsVisibleChanged">
+            <Label Name="lblTitlePanelSelectProject" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlePanelSelectProject2" Content="" Margin="0,15,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <!-- Background="{StaticResource ListBgImage}"-->
+            <ListBox x:Name="projectLstBox" Margin="0,-30,0,0" Width="1100" HorizontalContentAlignment="Center" Height="410" 
+                     BorderBrush="Transparent" Background="Transparent"  ItemContainerStyle="{StaticResource Style2}"   >
+                <ListBox.ItemTemplate>
+                    
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"  Width="959" Height="88">
+                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" Text="{Binding Path=CustProjectName}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+
+            <Button x:Name="btnHome51" Margin="-950,177,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelSelectProject" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelSelectProject_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+        <!-- Screen 060 :::: Send OTP Result -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelEntryOTP" TouchDown="panelEntryOTP_TouchDown"  IsVisibleChanged="panelEntryOTP_IsVisibleChanged">
+            <Label Name="lblTitlepanelEntryOTP" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryOTP2" Content="" Margin="0,15,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryOTP3" Margin="0,15,0,0"  FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryOTP4" Margin="0,15,0,0"  FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <Label Name="lblOTPpanelEntryOTP" Margin="0,30,0,0" Foreground="Gray"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblOTPpanelEntryOTP_TouchDown" />
+            <Line X1="400" Y1="2" X2="900" Y2="2" Stroke="Gray" StrokeThickness="1" />
+
+            <Label Name="lblRequestNewOTP_panelEntryOTP" Margin="0,30,0,0" Foreground="Red"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblRequestNewOTP_panelEntryOTP_TouchDown" />
+
+
+
+            <Button x:Name="btnHome5" Margin="-950,185,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelEntryOTP" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelEntryOTP_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+        </StackPanel>
+
+
+        <!-- Screen 070 :::: Rescan QR-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelEntryQR" TouchDown="panelEntryQR_TouchDown" IsVisibleChanged="panelEntryQR_IsVisibleChanged">
+            <Label Name="lblTitlepanelEntryQR" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryQR1" Content="" Margin="0,5,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryQR2" Content="" Margin="0,5,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryQR3" Margin="0,5,0,0"  FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlepanelEntryQR4" Margin="0,5,0,0"  FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <Image gif:ImageBehavior.AnimatedSource="Resources/Asset/scanQR.gif"  Panel.ZIndex="13" Margin="50,0,0,0" Visibility="Visible" Name="imgProcessing_panelEntryQR" Width="250" Height="250" />
+
+            <TextBox Name="readQRCodeEmer" Margin="0,0,0,0"    Foreground="Transparent" BorderBrush="Transparent" BorderThickness="0" Background="Transparent"   FontSize="16"  KeyDown="readQRCode_KeyDown" />
+
+
+            <Label Name="lblOTPpanelScanQR_panelEntryQR" Margin="0,10,0,0" Foreground="Gray"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblOTPpanelScanQR_panelEntryQR_TouchDown" />
+            <Line X1="400" Y1="2" X2="900" Y2="2" Stroke="Gray" StrokeThickness="1" />
+
+            <Label Name="lblRequestNewQR_panelEntryQR" Margin="0,30,0,0" Foreground="Red"  FontSize="46" HorizontalContentAlignment="Center" TouchDown="lblRequestNewOTP_panelEntryQR_TouchDown" />
+
+
+
+            <Button x:Name="btnHome6" Margin="-950,-58,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelEntryQR" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelEntryQR_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+        </StackPanel>
+
+
+
+        <!-- Screen 080 :::: Display work promise detail-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelDisplayProject" IsVisibleChanged="PanelDisplayProject_IsVisibleChanged">
+            <Label Name="lblTitlePanelDisplayProject" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <Border BorderBrush="#FF000000" BorderThickness="0" Margin="0,0,0,0" CornerRadius="8"  Width="950" Height="520" >
+                <Border.Background>
+                    <ImageBrush ImageSource="Resources/Screen080/CorrectQRCode.png"/>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="120" />
+                        
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                    </Grid.RowDefinitions>
+
+                    <Label Name="lblTitlePanelDisplayProject2" Grid.Row="0" Grid.Column="0" Content="" Margin="0,40,0,0" FontSize="36" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject3" Grid.Row="1" Grid.Column="0" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+                    <Line X1="340" Y1="0" X2="600" Y2="0" Grid.Row="2" Grid.Column="0" Stroke="Red" Margin="0,-220,0,0" StrokeThickness="1" VerticalAlignment="Center"  />
+
+                    <Label Name="lblTitlePanelDisplayProject4" Grid.Row="3" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject5" Grid.Row="4" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject6" Grid.Row="5" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject7" Grid.Row="6" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+                </Grid>
+
+            </Border>
+
+
+            <Button x:Name="btnHome7" Margin="-950,140,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelDisplayProject" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelDisplayProject_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+        </StackPanel>
+
+
+        <!-- Screen 090 :::: Display error-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelDisplayError" IsVisibleChanged="panelDisplayError_IsVisibleChanged">
+            <Label Name="lblTitlePanelDisplayError" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <Border BorderBrush="#FF000000" BorderThickness="0" Margin="0,0,0,0" CornerRadius="8"  Width="950" Height="520" >
+                <Border.Background>
+                    <ImageBrush ImageSource="Resources/Screen080/CorrectQRCode.png"/>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="120" />
+
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                    </Grid.RowDefinitions>
+
+                    <Label Name="lblTitlePanelDisplayError2" Grid.Row="0" Grid.Column="0" Content="" Margin="0,40,0,0" FontSize="36" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayError3" Grid.Row="1" Grid.Column="0" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+                    <Line X1="340" Y1="0" X2="600" Y2="0" Grid.Row="2" Grid.Column="0" Stroke="Red" Margin="0,-220,0,0" StrokeThickness="1" VerticalAlignment="Center"  />
+
+                    <Label Name="lblTitlePanelDisplayError4" Grid.Row="3" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayError5" Grid.Row="4" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayError6" Grid.Row="5" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayError7" Grid.Row="6" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+                </Grid>
+
+            </Border>
+
+
+
+            <Button x:Name="btnHome8" Margin="-950,140,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+        <!-- Screen 100 :::: privacy market-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelPrivacyMarketing" IsVisibleChanged="panelPrivacyMarketing_IsVisibleChanged">
+            <Label Name="lblTitlePanelPrivacyMarketing" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+            <Border BorderBrush="#FF000000" BorderThickness="0"  CornerRadius="8"  Width="950" Height="520" Name="borderPrivacyMarketing" >
+                <Border.Background>
+                    <ImageBrush ImageSource="Resources/Screen100/backgroundConsent.png"/>
+                </Border.Background>
+                <WPF:HtmlPanel x:Name="lblPrivacyMarketing" Height="340" Margin="0,-70,0,0" Background="White"  Width="800">
+
+                </WPF:HtmlPanel>
+
+            </Border>
+
+
+            <Button x:Name="btnHome9" Margin="-950,140,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnSkip_panelPrivacyMarketing" Margin="721,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnSkip_panelPrivacyMarketing_TouchDown"  Content="ข้าม" Width="132" Height="73" Style="{StaticResource ButtonSkip}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnSkip.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+            <Button x:Name="btnNext_panelPrivacyMarketing" Margin="1021,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelPrivacyMarketing_TouchDown"  Content="ยินยอม" Width="132" Height="73" Style="{StaticResource ButtonAccept}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btTCNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+        <!-- Screen 100 :::: privacy sensitive-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelPrivacySensitive" 
+                    IsVisibleChanged="panelPrivacySensitive_IsVisibleChanged">
+            <Label Name="lblTitlePanelPrivacySensitive" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+            <Border BorderBrush="#FF000000" BorderThickness="0"  CornerRadius="8"  Width="950" Height="520" Name="borderPrivacySensitive" >
+                <Border.Background>
+                    <ImageBrush ImageSource="Resources/Screen100/backgroundConsent.png"/>
+                </Border.Background>
+                <WPF:HtmlPanel x:Name="lblPrivacySensitive" Height="340" Margin="0,-70,0,0" Background="White"  Width="800">
+
+                </WPF:HtmlPanel>
+
+            </Border>
+
+
+            <Button x:Name="btnHome10" Margin="-950,140,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnSkip_panelPrivacySensitive" Margin="721,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnSkip_panelPrivacySensitive_TouchDown"  Content="ข้าม" Width="132" Height="73" Style="{StaticResource ButtonSkip}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnSkip.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+            <Button x:Name="btnNext_panelPrivacySensitive" Margin="1021,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelPrivacySensitive_TouchDown"  Content="ยินยอม" Width="132" Height="73" Style="{StaticResource ButtonAccept}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btTCNext.png"/>
+                </Button.Background>
+
+            </Button>
+        </StackPanel>
+
+
+        <!-- Screen 100 :::: Welcome -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelWelcomeTrueIDC" 
+                    IsVisibleChanged="panelWelcomeTrueIDC_IsVisibleChanged">
+            <Label Name="lblTitlePanelWelcomeTrueIDC" Content="ยินดีต้อนรับสู่ True IDC" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlePanelWelcomeTrueIDC2" Content="กรุณารับบัตร" Margin="0,0,0,0" FontSize="32" HorizontalContentAlignment="Center" />
+
+            <Image gif:ImageBehavior.AnimatedSource="Resources/Asset/receiveCard.gif"  Panel.ZIndex="13" Margin="50,30,0,0" Visibility="Visible" Name="imgWelcome" Width="450" Height="450" />
+
+            <Label Name="lblTitlePanelWelcomeTrueIDC3" Content="กรุณาตรวจสอบและรับบัตรคืนจากตู้(ถ้ามี)" Margin="0,0,0,0" FontSize="32" HorizontalContentAlignment="Center" />
+
+            <Button x:Name="btnHome11" Margin="-950,55,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+        </StackPanel>
+
+
+        <!-- Screen 110 :::: Return Card-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" 
+                    Name="panelReturnCard"
+                    IsVisibleChanged="panelReturnCard_IsVisibleChanged">
+            <Label Name="lblTitlePanelReturnCard" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Image gif:ImageBehavior.AnimatedSource="Resources/Asset/insertCard.gif"  Panel.ZIndex="13" Margin="50,30,0,0" Visibility="Visible" Name="imgReturnCard" Width="450" Height="450" />
+
+
+
+
+            <Button x:Name="btnHome12" Margin="-950,180,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelReturnCard" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelReturnCard_TouchDown" Visibility="Hidden"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+
+
+        </StackPanel>
+
+
+        <!-- Screen 110 :::: Return Card Success-->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelReturnCardSuccess" 
+                    IsVisibleChanged="panelReturnCardSuccess_IsVisibleChanged">
+            <Label Name="lblTitlePanelReturnCardSuccess" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Image gif:ImageBehavior.AnimatedSource="Resources/Asset/thankyou.jpg"  Panel.ZIndex="13" Margin="50,30,0,0" Visibility="Visible" Name="imgReturnCardSuccess" Width="450" Height="450" />
+
+
+            <Button x:Name="btnHome13" Margin="-950,180,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+        </StackPanel>
+
+        <StackPanel  Name="panelAlertPopup" Width="994" Height="436" Margin="-550,130,0,0" >
+            <Popup Name="alertPopup" StaysOpen="True" Placement="Bottom"  Width="984"  Height="436"
+                PopupAnimation="Slide" AllowsTransparency="True" VerticalOffset="70" HorizontalOffset="-40"  HorizontalAlignment="Center"  >
+
+
+                <Label Name="lblAlertMessage" Grid.Row="3" Content="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx" Grid.Column="0" 
+                       Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                
+            </Popup>
+        </StackPanel>
+
+
+        <StackPanel  Name="panelFullKeyboardPopup" Width="994" Height="390" Margin="280,0,0,0" HorizontalAlignment="Center" >
+            <Popup Name="fullKeyboardPopup" StaysOpen="True" Placement="Bottom"  Width="984"  Height="390"
+                PopupAnimation="Slide" AllowsTransparency="True" 
+                   HorizontalAlignment="Center"  >
+
+                <Border  HorizontalAlignment="Left" Width="994" Margin="0,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                        </Grid.RowDefinitions> 
+                        
+                    <Grid HorizontalAlignment="Left" Grid.Row="0"  Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Button Content="1" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="0" />
+                        <Button Content="2" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="1" />
+                        <Button Content="3" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="2" />
+                        <Button Content="4" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="3" />
+                        <Button Content="5" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="4" />
+                        <Button Content="6" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="5" />
+                        <Button Content="7" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="6" />
+                        <Button Content="8" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="7" />
+                        <Button Content="9" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="8" />
+                        <Button Content="0" Style="{StaticResource FullKeypadBtn}" Grid.Row="0" Grid.Column="9" />
+                    </Grid>
+
+
+                    <Grid HorizontalAlignment="Left" Grid.Row="1"  Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Q" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="0" />
+                        <Button Content="W" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="1" />
+                        <Button Content="E" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="2" />
+                        <Button Content="R" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="3" />
+                        <Button Content="T" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="4" />
+                        <Button Content="Y" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="5" />
+
+                        <Button Content="U" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="6" />
+                        <Button Content="I" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="7" />
+                        <Button Content="O" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="8" />
+                        <Button Content="P" Style="{StaticResource FullKeypadBtn}" Grid.Row="1" Grid.Column="9" />                       
+                    </Grid>
+
+                        <Grid HorizontalAlignment="Left" Grid.Row="2"  Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Button Content="A" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="1" />
+                            <Button Content="S" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="2" />
+                            <Button Content="D" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="3" />
+                            <Button Content="F" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="4" />
+                            <Button Content="G" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="5" />
+                            <Button Content="H" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="6" />
+                            <Button Content="J" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="7" />
+                            <Button Content="K" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="8" />
+                            <Button Content="L" Style="{StaticResource FullKeypadBtn}" Grid.Row="2" Grid.Column="9" />
+                            
+                        </Grid>
+
+
+
+                        <Grid HorizontalAlignment="Left" Grid.Row="3"  Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+
+
+                            <Button Content="Z" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="1" />
+                            <Button Content="X" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="2" />
+                            <Button Content="C" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="3" />
+                            <Button Content="V" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="4" />
+                            <Button Content="B" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="5" />
+                            <Button Content="N" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="6" />
+                            <Button Content="M" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="7" />
+
+
+                            <Button Content="Del" Style="{StaticResource FullKeypadBtn}" Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="2" >
+                            </Button>
+                            
+                            <!--<Button Content="Del" Foreground="{x:Null}"  Grid.Row="3" Grid.Column="8"  AutomationProperties.HelpText="Backspace">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="Resources/Keyboard/keyBackspace.png"/>
+                                </Button.Background>
+                            </Button>-->
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+            </Popup>
+        </StackPanel>
+
+
+        <StackPanel Width="480" Name="panelSmallKeyboardPopup">
+            <Popup Name="popupNumPad" StaysOpen="True" Placement="Bottom"  Width="480"
+                PopupAnimation="Slide" AllowsTransparency="True" VerticalOffset="30" 
+                   HorizontalOffset="-340"  HorizontalAlignment="Center"  >
+                <Border Background="Transparent" Opacity="80" HorizontalAlignment="Center" Width="480">
+                   
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"  />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="70" />
+                        </Grid.RowDefinitions>
+                        <Button Content="1" Style="{StaticResource KeypadBtn}" Grid.Row="0" Grid.Column="0" />
+                        <Button Content="2" Style="{StaticResource KeypadBtn}" Grid.Row="0" Grid.Column="1" />
+                        <Button Content="3" Style="{StaticResource KeypadBtn}" Grid.Row="0" Grid.Column="2" />
+                        <Button Content="4" Style="{StaticResource KeypadBtn}" Grid.Row="1" Grid.Column="0" />
+                        <Button Content="5" Style="{StaticResource KeypadBtn}" Grid.Row="1" Grid.Column="1" />
+                        <Button Content="6" Style="{StaticResource KeypadBtn}" Grid.Row="1" Grid.Column="2" />
+
+                        <Button Content="7" Style="{StaticResource KeypadBtn}" Grid.Row="2" Grid.Column="0" />
+                        <Button Content="8" Style="{StaticResource KeypadBtn}" Grid.Row="2" Grid.Column="1" />
+                        <Button Content="9" Style="{StaticResource KeypadBtn}" Grid.Row="2" Grid.Column="2" />
+
+                        <Button Content="X" Style="{StaticResource KeypadBtn}" Grid.Row="3" Grid.Column="0"  AutomationProperties.HelpText="Hide keyboard" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/Keyboard/keyButtonBackground.png"  />
+
+                            </Button.Background>
+                        </Button>
+                        <Button Content="0" Style="{StaticResource KeypadBtn}" Grid.Row="3" Grid.Column="1" />
+                        <Button Content="Del" Style="{StaticResource KeypadBtn}" Grid.Row="3" Grid.Column="2" AutomationProperties.HelpText="Backspace">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/Keyboard/keyButtonBackground.png"/>
+                            </Button.Background>
+                        </Button>
+                        <!--<Button Content="" IsEnabled="False" Style="{StaticResource KeypadBtn}" Grid.Row="3" Grid.Column="2" />-->
+                    </Grid>
+                </Border>
+            </Popup>
+        </StackPanel>
+
+
+
+    </Grid>
+</Window>
