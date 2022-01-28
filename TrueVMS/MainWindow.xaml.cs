@@ -208,8 +208,10 @@ namespace TrueVMS
             setPanelProperty(panelReturnCard, System.Windows.Visibility.Hidden);
             setPanelProperty(panelReturnCardSuccess, System.Windows.Visibility.Hidden);
             setPanelProperty(panelSelectProject, System.Windows.Visibility.Hidden);
+            setPanelProperty(panelSelectWorkpermit, System.Windows.Visibility.Hidden);
 
-            
+
+
 
 
             panelFullKeyboardPopup.Visibility = System.Windows.Visibility.Hidden;
@@ -245,6 +247,8 @@ namespace TrueVMS
 
             setLabelProperty(lblTitlePanelSelectProject);
             setLabelProperty(lblTitlePanelSelectProject2);
+            setLabelProperty(lblTitlePanelSelectWorkpermit);
+            setLabelProperty(lblTitlePanelSelectWorkpermit2);
 
 
 
@@ -300,6 +304,9 @@ namespace TrueVMS
 
             lblTitlePanelSelectProject.FontSize = 36;
             lblTitlePanelSelectProject2.FontSize = 32;
+
+            lblTitlePanelSelectWorkpermit.FontSize = 36;
+            lblTitlePanelSelectWorkpermit2.FontSize = 32;
 
             lblTitlePanelDisplayError.FontSize = 36;
             lblTitlePanelDisplayError2.FontSize = 36;
@@ -359,6 +366,7 @@ namespace TrueVMS
             setButtonProperty(btnHome12);
             setButtonProperty(btnHome13);
             setButtonProperty(btnHome51);
+            setButtonProperty(btnHome52);
 
             setButtonProperty(btnNext_panelDisplayProject);
             setButtonProperty(btnNext_panelTC);
@@ -368,6 +376,7 @@ namespace TrueVMS
             setButtonProperty(btnNext_panelEntryQR);
             setButtonProperty(btnNext_panelReturnCard);
             setButtonProperty(btnNext_panelSelectProject);
+            setButtonProperty(btnNext_panelSelectWorkpermit);
 
             setButtonProperty(btnSkip_panelPrivacySensitive);
             setButtonProperty(btnNext_panelPrivacySensitive);
@@ -525,6 +534,7 @@ namespace TrueVMS
                 btnHome4.Content = "หน้าหลัก";
                 btnHome5.Content = "หน้าหลัก";
                 btnHome51.Content = "หน้าหลัก";
+                btnHome52.Content = "หน้าหลัก";
                 btnHome6.Content = "หน้าหลัก";
                 btnHome7.Content = "หน้าหลัก";
                 btnHome8.Content = "หน้าหลัก";
@@ -545,6 +555,7 @@ namespace TrueVMS
                 btnNext_panelDisplayProject.Content = "ต่อไป";
                 btnNext_panelReturnCard.Content = "ต่อไป";
                 btnNext_panelSelectProject.Content = "ต่อไป";
+                btnNext_panelSelectWorkpermit.Content = "ต่อไป";
 
                 btnSkip_panelPrivacySensitive.Content = "ข้าม";
                 btnSkip_panelPrivacyMarketing.Content = "ข้าม";
@@ -571,6 +582,8 @@ namespace TrueVMS
 
                 lblTitlePanelSelectProject.Content = "กรุณาเลือกโปรเจคที่จะเข้าดำเนินการ";
                 lblTitlePanelSelectProject2.Content = "";
+                lblTitlePanelSelectWorkpermit.Content = "กรุณาเลือก Workpermit ที่จะเข้าดำเนินการ";
+                lblTitlePanelSelectWorkpermit2.Content = "";
 
 
                 lblTitlepanelResendQR.Content = "ระบบจะจัดส่ง QR-Code หรือ OTP";
@@ -635,6 +648,7 @@ namespace TrueVMS
                 btnHome12.Content = "Home";
                 btnHome13.Content = "Home";
                 btnHome51.Content = "Home";
+                btnHome52.Content = "Home";
 
                 btnResendQRByEmail.Content = "Email";
                 btnResendQRBySMS.Content = "SMS";
@@ -655,6 +669,7 @@ namespace TrueVMS
                 btnNext_panelPrivacySensitive.Content = "Accept";
                 btnNext_panelPrivacyMarketing.Content = "Accept";
                 btnNext_panelSelectProject.Content = "Next";
+                btnNext_panelSelectWorkpermit.Content = "Next";
 
                 lblHeaderTimeText.Content = "Time remaining                Second";
                 lblEnterIDCardOrPassportTitle.Content = "Please verify yourself";
@@ -680,6 +695,8 @@ namespace TrueVMS
 
                 lblTitlePanelSelectProject.Content = "Select your project";
                 lblTitlePanelSelectProject2.Content = "";
+                lblTitlePanelSelectWorkpermit.Content = "Select your workpermit";
+                lblTitlePanelSelectWorkpermit2.Content = "";
 
                 lblTitlepanelEntryOTP.Content = "Please entry OTP ";
                 lblTitlepanelEntryOTP2.Content = "System already sent QR-Code to ";
@@ -861,6 +878,7 @@ namespace TrueVMS
             panelEntryOTP.Background = ib;
             panelEntryQR.Background = ib;
             panelSelectProject.Background = ib;
+            panelSelectWorkpermit.Background = ib;
 
 
             fileUrl = Utility.getFrmEnterIDCardOrPassportBackgroundImageFile();
@@ -1303,6 +1321,8 @@ namespace TrueVMS
 
                 //อ่านเพื่อแจกบัตร
 
+                //Workpermit ไม่มีทางเป็น null แล้ว
+                /*
                 if (WORKPERMIT == null)
                 {
                     if (ALL_WORKPERMIT != null && ALL_WORKPERMIT.Count > 1)
@@ -1310,7 +1330,7 @@ namespace TrueVMS
                         WORKPERMIT = ALL_WORKPERMIT[0];
                         logger.Info("System get workpetmit more than one, so system select first workpermit");
                     }
-                }
+                }*/
 
                 List<MLocationFloor> devideID = null;
                 DateTime start = DateTime.MinValue;
@@ -1589,12 +1609,13 @@ namespace TrueVMS
                     {
                         workpermitid = WORKPERMIT.WorkpermitId;
                     }
-                    if (ALL_WORKPERMIT != null && ALL_WORKPERMIT.Count > 1)
+                    /*if (ALL_WORKPERMIT != null && ALL_WORKPERMIT.Count > 1)
                     {
                         workpermitid = ALL_WORKPERMIT[0].WorkpermitId;
 
                         logger.Info("System get workpetmit more than one, so system select first workpermit");
-                    }
+                    }*/
+
                     logger.Info("Calling api for resend qr-code/sms workpermitid :" + workpermitid + ", Staff :" + STAFF.CustStaffId + ", chanel :" + chanel);
 
 
@@ -2199,6 +2220,7 @@ namespace TrueVMS
             readQRCodeEmer.Text = "";
 
             projectLstBox.Items.Clear();
+            workpermitLstBox.Items.Clear();
 
             btnReturnCard.IsEnabled = true;
 
@@ -2692,7 +2714,6 @@ namespace TrueVMS
                     if (WORKING_TYPE_WALKIN == WORKING_TYPE)
                     {
                         //cc
-
                         logger.Info("showPanelSelectProject ((allProjectVw Count > 1))");
                         showPanelSelectProject();
                     }
@@ -2800,12 +2821,12 @@ namespace TrueVMS
 
                     logger.Info("พบข้อมูล id-card/passport(Case Workpermit) :" + hideIdCard(idCardOrPassportNumber) + "พบ workpermit จำนวน " + ALL_WORKPERMIT.Count + " รายการ id รายการแรกคือ :" + ALL_WORKPERMIT[0].WorkpermitId + " " + ALL_WORKPERMIT[0].CustProjectName + " STAFF :" + STAFF.CustStaffName);
 
-                    if (WORKING_TYPE_WALKIN == WORKING_TYPE)
+                    //Select workpermit
+                    if (WORKING_TYPE_CUSTOMER == WORKING_TYPE)
                     {
-                        //cc
-                        showPanelSelectProject();
+                        showPanelSelectWorkpermit();
                     }
-                    else
+                    /*else
                     {
                         if (Convert.ToDecimal(LAST_TC_TH.Version) > (STAFF.TcVersion) || STAFF.TcVersion == null)
                         {
@@ -2825,7 +2846,7 @@ namespace TrueVMS
                                 ShowPanelResendQR();
                             }
                         }
-                    }
+                    }*/
                 }
 
             }
@@ -3685,30 +3706,39 @@ namespace TrueVMS
 
             if (m != null)
             {
-                if (ALL_WORKPERMIT != null)
+                /* if (ALL_WORKPERMIT != null)
+                 {
+                     foreach (WorkpermitVw b in m)
+                     {
+                         foreach (WorkpermitVw a in ALL_WORKPERMIT)
+                         {
+                             if (a.WorkpermitId == b.WorkpermitId)
+                             {
+                                 match = true;
+                                 WORKPERMIT = a;
+                                 ShowPanelProjectInformation();
+                             }
+                         }
+                     }
+                 }
+                 else
+                 {
+                     foreach (WorkpermitVw b in m)
+                     {
+                         if (WORKPERMIT.WorkpermitId == b.WorkpermitId)
+                         {
+                             match = true;
+                             ShowPanelProjectInformation();
+                         }
+                     }
+                 }*/
+
+                foreach (WorkpermitVw b in m)
                 {
-                    foreach (WorkpermitVw b in m)
+                    if (WORKPERMIT.WorkpermitId == b.WorkpermitId)
                     {
-                        foreach (WorkpermitVw a in ALL_WORKPERMIT)
-                        {
-                            if (a.WorkpermitId == b.WorkpermitId)
-                            {
-                                match = true;
-                                WORKPERMIT = a;
-                                ShowPanelProjectInformation();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (WorkpermitVw b in m)
-                    {
-                        if (WORKPERMIT.WorkpermitId == b.WorkpermitId)
-                        {
-                            match = true;
-                            ShowPanelProjectInformation();
-                        }
+                        match = true;
+                        ShowPanelProjectInformation();
                     }
                 }
             }
@@ -4909,7 +4939,7 @@ namespace TrueVMS
                     WorkpermitVw workpermitFromQrCode = getWorkPermitDetail(workpermit);
 
                     bool match = false;
-                    if (ALL_WORKPERMIT != null)
+                    /*if (ALL_WORKPERMIT != null)
                     {
                         foreach (WorkpermitVw a in ALL_WORKPERMIT)
                         {
@@ -4926,6 +4956,11 @@ namespace TrueVMS
                         {
                             match = true;
                         }
+                    }*/
+
+                    if (WORKPERMIT.WorkpermitId == workpermitFromQrCode.WorkpermitId)
+                    {
+                        match = true;
                     }
 
                     if (match)
@@ -5235,12 +5270,40 @@ namespace TrueVMS
 
         }
 
+        
+
+        private void loadWorkpermitToList()
+        {
+            workpermitLstBox.Items.Clear();
+            if (ALL_WORKPERMIT != null)
+            {
+                int i = 0;
+                foreach (WorkpermitVw w in ALL_WORKPERMIT)
+                {
+                    workpermitLstBox.Items.Insert(i++, w);
+                }
+            }
+        }
+
         private void showPanelSelectProject()
         {
             loadProjectToList();
 
             CURRENT_PANEL.Visibility = Visibility.Hidden;
             panelSelectProject.Visibility = Visibility.Visible;
+            panelHeader.Visibility = Visibility.Visible;
+            panelFotter.Visibility = Visibility.Visible;
+
+            AUTO_CANCEL_COUNT = TimeoutPanelSelectProject;
+        }
+
+
+        private void showPanelSelectWorkpermit()
+        {
+            loadWorkpermitToList();
+
+            CURRENT_PANEL.Visibility = Visibility.Hidden;
+            panelSelectWorkpermit.Visibility = Visibility.Visible;
             panelHeader.Visibility = Visibility.Visible;
             panelFotter.Visibility = Visibility.Visible;
 
@@ -5466,6 +5529,74 @@ namespace TrueVMS
                 btnReturnCard.IsEnabled = true;
             }*/
             
+        }
+
+        private void panelSelectWorkpermit_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            CURRENT_PANEL = (Panel)sender;
+        }
+
+        private void btnNext_panelSelectWorkpermit_TouchDown(object sender, TouchEventArgs e)
+        {
+
+            if (workpermitLstBox.SelectedIndex < 0)
+            {
+
+                if (LANGUAGE == LANGUAGE_THAI)
+                {
+                    alertWindow.setMessage("พบข้อผิดพลาด", "กรุณาเลือกโครงการก่อนเข้าใช้งาน", "");
+                }
+                else
+                {
+
+                    alertWindow.setMessage("Error", "Please select your workpermit", "");
+                }
+
+
+                alertWindow.ShowDialog();
+
+                return;
+            }
+
+            WorkpermitVw selectWorkpermit = (WorkpermitVw)workpermitLstBox.SelectedValue;
+
+            foreach (WorkpermitVw w in ALL_WORKPERMIT)
+            {
+                if (w.WorkpermitId == selectWorkpermit.WorkpermitId)
+                {
+                    WORKPERMIT = w;
+                }
+            }
+
+            workpermitLstBox.Items.Clear();
+
+            decimal ver = 0;
+            if (WORKING_TYPE == WORKING_TYPE_WALKIN)
+            {
+                if (STAFFEMER.TcVersion != null)
+                    ver = STAFFEMER.TcVersion.Value;
+            }
+            else
+            {
+                if (STAFF.TcVersion != null)
+                    ver = STAFF.TcVersion.Value;
+            }
+
+            if (Convert.ToDecimal(LAST_TC_TH.Version) > ver)
+            {
+                ShowTCPanel();
+            }
+            else
+            {
+                if (WORKING_TYPE == WORKING_TYPE_CUSTOMER)
+                {
+                    ShowScanQRPanel();
+                }
+                else
+                {
+                    ShowPanelResendQR();
+                }
+            }
         }
     }
 }

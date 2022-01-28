@@ -685,6 +685,8 @@
 
         </StackPanel>
 
+        
+        
 
 
         <!-- Screen 050 ::: Resend QR Code by Email/SMS -->
@@ -722,6 +724,53 @@
              >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+        </StackPanel>
+
+
+
+        <!-- Screen 052 ::: Select Workpermit -->
+        <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" 
+                    Name="panelSelectWorkpermit"  IsVisibleChanged="panelSelectWorkpermit_IsVisibleChanged">
+            <Label Name="lblTitlePanelSelectWorkpermit" Content="" Margin="0,30,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            <Label Name="lblTitlePanelSelectWorkpermit2" Content="" Margin="0,15,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+
+
+            <!-- Background="{StaticResource ListBgImage}"-->
+            <ListBox x:Name="workpermitLstBox" Margin="0,-30,0,0" Width="1100" HorizontalContentAlignment="Center" Height="410" 
+                     BorderBrush="Transparent" Background="Transparent"  ItemContainerStyle="{StaticResource Style2}"   >
+                <ListBox.ItemTemplate>
+
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"  Width="959" Height="88">
+                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" Text="{Binding Path=WorkpermitCode}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+
+            <Button x:Name="btnHome52" Margin="-950,177,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnBack.png"/>
+                </Button.Background>
+
+            </Button>
+
+
+            <Button x:Name="btnNext_panelSelectWorkpermit" Margin="950,-73,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+                    TouchDown="btnNext_panelSelectWorkpermit_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonNext}"
+                    Foreground="White"
+             >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Button/btnNext.png"/>
                 </Button.Background>
 
             </Button>
