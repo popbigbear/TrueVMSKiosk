@@ -924,23 +924,25 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="120" />
                         <RowDefinition Height="120" />
-                        <RowDefinition Height="120" />
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="40" />
                         
-                        <RowDefinition Height="70" />
-                        <RowDefinition Height="70" />
-                        <RowDefinition Height="70" />
-                        <RowDefinition Height="70" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
 
                     <Label Name="lblTitlePanelDisplayProject2" Grid.Row="0" Grid.Column="0" Content="" Margin="0,40,0,0" FontSize="36" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
                     <Label Name="lblTitlePanelDisplayProject3" Grid.Row="1" Grid.Column="0" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject3_ROOM" Grid.Row="2" Grid.Column="0" Content="" Margin="0,-60,0,0" FontSize="36" HorizontalContentAlignment="Center" />
 
-                    <Line X1="340" Y1="0" X2="600" Y2="0" Grid.Row="2" Grid.Column="0" Stroke="Red" Margin="0,-220,0,0" StrokeThickness="1" VerticalAlignment="Center"  />
+                    <Line X1="340" Y1="0" X2="600" Y2="0" Grid.Row="3" Grid.Column="0" Stroke="Red" Margin="0,-200,0,0" StrokeThickness="1" VerticalAlignment="Center"  />
 
-                    <Label Name="lblTitlePanelDisplayProject4" Grid.Row="3" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
-                    <Label Name="lblTitlePanelDisplayProject5" Grid.Row="4" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
-                    <Label Name="lblTitlePanelDisplayProject6" Grid.Row="5" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
-                    <Label Name="lblTitlePanelDisplayProject7" Grid.Row="6" Grid.Column="0" Content="" Margin="0,-160,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject4" Grid.Row="4" Grid.Column="0" Content="" Margin="0,-110,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject5" Grid.Row="5" Grid.Column="0" Content="" Margin="0,-120,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject6" Grid.Row="6" Grid.Column="0" Content="" Margin="0,-120,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+                    <Label Name="lblTitlePanelDisplayProject7" Grid.Row="7" Grid.Column="0" Content="" Margin="0,-120,0,0" FontSize="36" HorizontalContentAlignment="Center" />
 
 
                 </Grid>

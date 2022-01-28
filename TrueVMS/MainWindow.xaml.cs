@@ -234,6 +234,7 @@ namespace TrueVMS
             setLabelProperty(lblTitlePanelDisplayProject);
             setLabelProperty(lblTitlePanelDisplayProject2);
             setLabelProperty(lblTitlePanelDisplayProject3);
+            setLabelProperty(lblTitlePanelDisplayProject3_ROOM);
             setLabelProperty(lblTitlePanelDisplayProject4);
             setLabelProperty(lblTitlePanelDisplayProject5);
             setLabelProperty(lblTitlePanelDisplayProject6);
@@ -290,6 +291,7 @@ namespace TrueVMS
             lblTitlePanelDisplayProject.FontSize = 36;
             lblTitlePanelDisplayProject2.FontSize = 36;
             lblTitlePanelDisplayProject3.FontSize = 32;
+            lblTitlePanelDisplayProject3_ROOM.FontSize = 32;
             lblTitlePanelDisplayProject4.FontSize = 32;
             lblTitlePanelDisplayProject5.FontSize = 32;
             lblTitlePanelDisplayProject6.FontSize = 32;
@@ -1487,16 +1489,68 @@ namespace TrueVMS
             AUTO_CANCEL_COUNT = TimeoutPanelWelcomeToTrueIDC;
         }
 
+
+        private string roomFromDevide(List<MLocationFloor> devide)
+        {
+            try
+            {
+                string room = "";
+
+                if(devide.Count < 1)
+                {
+                    return "";
+                }
+
+                int i = 0;
+                foreach(MLocationRoom m in devide[0].MLocationRooms)
+                {
+                    room += m.Title+",";
+
+                    ++i;
+
+                    if (i == 8)
+                    {
+                        break;
+                    }
+                }
+
+                if (devide[0].MLocationRooms.Count > 8)
+                {
+                    room += "...";
+                }
+                else
+                {
+                    room = room.Substring(0, room.Length - 1);
+                }
+
+                return room;
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return "";
+            }
+
+        }
+
         private void loadProjectData()
         {
 
             logger.Info("start loadProjectData");
             if (WORKPERMIT != null)
             {
+
+                List<MLocationFloor> devide =  getDeviceID(WORKPERMIT.WorkpermitId);
+
+                string rooms = roomFromDevide(devide);
+
+
                 if (LANGUAGE == LANGUAGE_THAI)
                 {
                     lblTitlePanelDisplayProject2.Content = "Workpermit Code : " + WORKPERMIT.WorkpermitCode;
                     lblTitlePanelDisplayProject3.Content = WORKPERMIT.CustProjectName;
+                    lblTitlePanelDisplayProject3_ROOM.Content = "("+ rooms + ")";
                     lblTitlePanelDisplayProject4.Content = "ระยะเวลาเข้าใช้งาน";
                     lblTitlePanelDisplayProject5.Content = WORKPERMIT.WorkStartDatetime.ToString("dd MMM yyyy HH:mm");
                     lblTitlePanelDisplayProject6.Content = "ถึง";
@@ -1506,6 +1560,7 @@ namespace TrueVMS
                 {
                     lblTitlePanelDisplayProject2.Content = "Workpermit Code : " + WORKPERMIT.WorkpermitCode;
                     lblTitlePanelDisplayProject3.Content = WORKPERMIT.CustProjectName;
+                    lblTitlePanelDisplayProject3_ROOM.Content = "(" + rooms + ")";
                     lblTitlePanelDisplayProject4.Content = "Working time";
                     lblTitlePanelDisplayProject5.Content = WORKPERMIT.WorkStartDatetime.ToString("dd MMM yyyy HH:mm");
                     lblTitlePanelDisplayProject6.Content = "To";
@@ -1516,10 +1571,14 @@ namespace TrueVMS
             else
             {
 
+                List<MLocationFloor> devide = getDeviceIDByProject(Convert.ToString(PROJECT.CustProjectId));
+                string rooms = roomFromDevide(devide);
+
                 if (LANGUAGE == LANGUAGE_THAI)
                 {
                     lblTitlePanelDisplayProject2.Content = "Project Code : " + PROJECT.CustomerCode;
                     lblTitlePanelDisplayProject3.Content = PROJECT.CustProjectName;
+                    lblTitlePanelDisplayProject3_ROOM.Content = "(" + rooms + ")";
                     lblTitlePanelDisplayProject4.Content = "ระยะเวลาเข้าใช้งาน";
                     lblTitlePanelDisplayProject5.Content = PROJECT.CustProjectStart.ToString("dd MMM yyyy HH:mm");
                     lblTitlePanelDisplayProject6.Content = "ถึง";
@@ -1529,6 +1588,7 @@ namespace TrueVMS
                 {
                     lblTitlePanelDisplayProject2.Content = "Project Code : " + PROJECT.CustomerCode;
                     lblTitlePanelDisplayProject3.Content = PROJECT.CustProjectName;
+                    lblTitlePanelDisplayProject3_ROOM.Content = "(" + rooms + ")";
                     lblTitlePanelDisplayProject4.Content = "Working time";
                     lblTitlePanelDisplayProject5.Content = PROJECT.CustProjectStart.ToString("dd MMM yyyy HH:mm");
                     lblTitlePanelDisplayProject6.Content = "To";
@@ -2194,6 +2254,7 @@ namespace TrueVMS
 
             lblTitlePanelDisplayProject2.Content = "";
             lblTitlePanelDisplayProject3.Content = "";
+            lblTitlePanelDisplayProject3_ROOM.Content = "";
             lblTitlePanelDisplayProject4.Content = "";
             lblTitlePanelDisplayProject5.Content = "";
             lblTitlePanelDisplayProject6.Content = "";
