@@ -1251,9 +1251,7 @@ namespace TrueVMS
         {
             try
             {
-
-                if (IS_DEBUG)
-                    logger.Info("getDeviceID :" + workpermitid + " floor code :"+ FloorCode);
+                logger.Info("getDeviceID :" + workpermitid + " floor code :"+ FloorCode);
 
                 var client = new RestClient(SERVER_API_URL + "/api/Kiosk/GetDoorByWorkpermitId/"+ workpermitid + ","+FloorCode);
                 client.Timeout = -1;
@@ -1264,6 +1262,8 @@ namespace TrueVMS
                 IEnumerable<MLocationFloor> m = JsonConvert.DeserializeObject<IEnumerable<MLocationFloor>>(response.Content);
                 if (m != null)
                 {
+                    logger.Info("finish getDeviceID :" + workpermitid + " floor code :" + FloorCode);
+
                     return m.ToList<MLocationFloor>();
                 }
                 else
