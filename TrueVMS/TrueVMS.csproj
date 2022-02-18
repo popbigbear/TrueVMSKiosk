@@ -314,6 +314,12 @@
     <Resource Include="Resources\Screen030\TCPopBckground_en.png" />
     <Resource Include="Resources\Screen090\backgroundConsent_en.png" />
     <Resource Include="Resources\Asset\insertCard.gif" />
+    <Resource Include="Resources\Screen080\correct.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Screen080\correct.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\ScreenSaverVideo\20210909\AW Poster ALL 1080 x 1920 No ADS.mp4" />
     <Content Include="Resources\ScreenSaverVideo\20211010\file_example_MP4_1280_10MG.mp4" />
   </ItemGroup>

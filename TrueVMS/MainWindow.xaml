@@ -746,7 +746,18 @@
 
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal"  Width="959" Height="88">
-                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" Text="{Binding Path=WorkpermitCode}"></TextBlock>
+                            
+                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" >
+                                <!--Text="{Binding Path=WorkpermitCode}"-->
+                                <TextBlock.Text>
+                                 <MultiBinding StringFormat="{}{0}:{1} ({2})">
+                                        <Binding Path="WorkpermitCode" />
+                                        <Binding Path="CustProjectName" />
+                                        <Binding Path="Location" />                                        
+                                    </MultiBinding>
+                                </TextBlock.Text>
+
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -792,7 +803,17 @@
                     
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal"  Width="959" Height="88">
-                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" Text="{Binding Path=CustProjectName}"></TextBlock>
+                            <TextBlock x:Name="ListItemText" Margin="15,15,0,0" >
+
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}:{1} ({2})">
+                                        <Binding Path="CustomerCode" />
+                                        <Binding Path="CustProjectName" />
+                                        <Binding Path="Location" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -914,15 +935,18 @@
         <!-- Screen 080 :::: Display work promise detail-->
         <StackPanel HorizontalAlignment="Left" Height="846" Margin="0,100,0,0" VerticalAlignment="Top" Width="1280" Name="panelDisplayProject" IsVisibleChanged="PanelDisplayProject_IsVisibleChanged">
             <Label Name="lblTitlePanelDisplayProject" Content="" Margin="0,0,0,0" FontSize="36" HorizontalContentAlignment="Center" />
+            
+            <Image Source="/Resources/Screen080/correct.png" Width="120" Height="120" HorizontalAlignment="Center" />
 
 
-            <Border BorderBrush="#FF000000" BorderThickness="0" Margin="0,0,0,0" CornerRadius="8"  Width="950" Height="520" >
+
+            <Border BorderBrush="#FF000000" BorderThickness="0" Margin="0,0,0,0" CornerRadius="8"  Width="950" Height="600" >
                 <Border.Background>
                     <ImageBrush ImageSource="Resources/Screen080/CorrectQRCode.png"/>
                 </Border.Background>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="120" />
+                        <RowDefinition Height="140" />
                         <RowDefinition Height="120" />
                         <RowDefinition Height="80" />
                         <RowDefinition Height="40" />
@@ -950,7 +974,7 @@
             </Border>
 
 
-            <Button x:Name="btnHome7" Margin="-950,140,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
+            <Button x:Name="btnHome7" Margin="-950,-20,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
                     TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
                     Foreground="White"
              >
@@ -1159,7 +1183,7 @@
 
 
             <Button x:Name="btnHome12" Margin="-950,180,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
-                    TouchDown="btnHome1_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
+                    TouchDown="btnHome12_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
                     Foreground="White"
              >
                 <Button.Background>
