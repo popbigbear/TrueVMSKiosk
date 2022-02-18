@@ -4407,26 +4407,26 @@ namespace TrueVMS
 
                 if (CARD != "")
                 {
-                    model.Description = "Read card for retrun card complete";
-                    model.Event = "Return Card";
-                    model.SubEvent = "Return Card Success";
-                    model.CardNo = CARD;
-                    var task = Task.Run(async () => await addActionLog(model));
+                    //model.Description = "Read card for retrun card complete";
+                    //model.Event = "Return Card";
+                    //model.SubEvent = "Return Card Success";
+                    //model.CardNo = CARD;
+                    //var task = Task.Run(async () => await addActionLog(model));
 
                     //pop add carddistribute_log
-                    var task2 = Task.Run(async () => await addDistributeCardLog("COLLECTED",CARD));
-                    logger.Info("Add Distribute Card Log Success");
+                    //var task2 = Task.Run(async () => await addDistributeCardLog("COLLECTED",CARD));
+                    //logger.Info("Add Distribute Card Log Success");
+                    //logger.Info("Return Card Success :" + CARD);
 
-                    logger.Info("Return Card Success :" + CARD);
                     ShowPanelReturnCardSuccess();
                 }
                 else
                 {
-                    model.Description = "Can not read card for retrun card";
-                    model.Event = "Return Card";
-                    model.SubEvent = "Return Card Not Success";
-                    logger.Info("Return Card Not Success");
-                    var task = Task.Run(async () => await addActionLog(model));
+                    //model.Description = "Can not read card for retrun card";
+                    //model.Event = "Return Card";
+                    //model.SubEvent = "Return Card Not Success";
+                    //logger.Info("Return Card Not Success");
+                    //var task = Task.Run(async () => await addActionLog(model));
 
                     alertWindow.setMessage("Error", "Card Return", "Return Card Not Success");
                     alertWindow.ShowDialog();
