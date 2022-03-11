@@ -76,7 +76,7 @@ namespace TrueVMS
                 var request = new RestRequest(Method.GET);
                 //request.AddHeader();
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
 
 
                 TCFileVersionModel m = JsonConvert.DeserializeObject<TCFileVersionModel>(response.Content);

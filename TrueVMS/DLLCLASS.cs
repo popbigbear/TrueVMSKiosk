@@ -9,7 +9,7 @@ namespace TrueVMS
 {
     public class DLLCLASS
     {
-        UInt32 HandCom;
+        //UInt32 HandCom;
 
         [DllImport("CRT_571.dll", CharSet = CharSet.Ansi)]
         public static extern UInt32 CommOpen(String ComStr);

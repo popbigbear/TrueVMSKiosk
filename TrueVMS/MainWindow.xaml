@@ -1184,7 +1184,7 @@
 
             <Button x:Name="btnHome12" Margin="-950,180,0,0" BorderThickness="0" HorizontalContentAlignment="Center"
                     TouchDown="btnHome12_TouchDown"  Width="191" Height="73" Style="{StaticResource ButtonBack}"
-                    Foreground="White"
+                    Foreground="White" Visibility="Hidden"
              >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Button/btnBack.png"/>

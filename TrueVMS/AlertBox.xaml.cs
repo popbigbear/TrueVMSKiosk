@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TrueVMS
 {
@@ -19,21 +8,35 @@ namespace TrueVMS
     /// </summary>
     public partial class AlertBox : Window
     {
-        
+
         public AlertBox()
         {
             InitializeComponent();
         }
 
-        
 
-        public void setMessage(string title, string msg1,string msg2)
+
+        public void setMessage(string title, string msg1, string msg2, string msg3 = "")
         {
             lblAlertTitle.Content = title;
             lblAlertMessage.Content = msg1;
             lblAlertMessage2.Content = msg2;
+            try
+            {
+                grid4.Height = new GridLength(0);
+                lblAlertMessage3.Content = "";
+                if (msg3 != null)
+                {
+                    if (msg3.Trim() != "")
+                    {
+                        grid4.Height = new GridLength(60);
+                        lblAlertMessage3.Content = msg3;
+                    }
+                }
+            }
+            catch { }
 
-            if(MainWindow.LANGUAGE == MainWindow.LANGUAGE_THAI)
+            if (MainWindow.LANGUAGE == MainWindow.LANGUAGE_THAI)
             {
                 btnClose.Content = "ปิด";
             }

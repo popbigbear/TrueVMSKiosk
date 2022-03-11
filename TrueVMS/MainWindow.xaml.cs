@@ -29,7 +29,6 @@ using System.Windows.Threading;
 using ThaiNationalIDCard;
 using TrueVMS.Model;
 using WPFMediaKit.DirectShow.Controls;
-using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
@@ -152,11 +151,58 @@ namespace TrueVMS
 
         public MainWindow()
         {
-            InitializeComponent();
-            InitialScreen();
+            bool flagbool = false;
+            flagbool = RemoveInstances("TrueVMS");
+            if (flagbool == true)
+            {
+                Application.Current.Shutdown();
+            }
+            else
+            {
+                try
+                {
+                    InitializeComponent();
+                    InitialScreen();
+                }
+                catch 
+                {
+                    Application.Current.Shutdown();
+                }
+            }
         }
 
+        public static bool RemoveInstances(string AppName)
+        {
+            bool removed = false;
+            int checkfile = 0;
+            try
+            {
+                AppName = AppName.ToUpper();
+                AppName = AppName.Replace(".EXE", "");
+                System.Diagnostics.Process[] prs = System.Diagnostics.Process.GetProcesses();
+                foreach (System.Diagnostics.Process proces in prs)
+                {
+                    if (proces.ProcessName.ToUpper() == AppName)
+                    {
+                        proces.Refresh();
+                        checkfile += 1;
+                        //if (!proces.HasExited)
+                        //    proces.Kill();
+                    }
+                }
 
+                if (checkfile > 1)
+                    removed = true;
+                else
+                    removed = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                removed = false;
+            }
+            return removed;
+        }
         private void InitialScreen()
         {
             InitialLogger();
@@ -192,7 +238,7 @@ namespace TrueVMS
             InitialLabel();
 
             panelScreenSaver.Visibility = Visibility.Visible;
-            
+
             setPanelProperty(panelEntry, System.Windows.Visibility.Hidden);
             setPanelProperty(panelEnterIDCardOrPassport, System.Windows.Visibility.Hidden);
             setPanelProperty(panelTC, System.Windows.Visibility.Hidden);
@@ -463,7 +509,7 @@ namespace TrueVMS
                 TimeoutPanelReturnCardSuccess = Convert.ToInt32(ConfigurationManager.AppSettings["TimeoutPanelReturnCardSuccess"]);
                 TimeoutPanelSelectProject = Convert.ToInt32(ConfigurationManager.AppSettings["TimeoutPanelSelectProject"]);
 
-                
+
 
                 MASTER_RESEND_OTP_COUNT = Convert.ToInt32(ConfigurationManager.AppSettings["ResendOTPCount"]);
                 resendOTPCount = MASTER_RESEND_OTP_COUNT;
@@ -500,7 +546,8 @@ namespace TrueVMS
                         logger.Info(LAST_TC_TH.HtmlDetail);
                     }
                 }
-                catch {
+                catch
+                {
                     QRTIMEOUT = -15;
                 }
 
@@ -833,11 +880,11 @@ namespace TrueVMS
 
                 //return ipaddress.ToString();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return ConfigurationManager.AppSettings["NodeIP"]; // or IPAddress.None if you prefer
             }
-            
+
         }
 
 
@@ -860,7 +907,7 @@ namespace TrueVMS
 
             logger.Info("********************************************************");
             //logger.InfoToDblog(Utility.CODE_000, Utility.LOG_TYPE_APPLICATION_GENERAL, Utility.START_APPLICATION, terminalCode);
-            logger.Info("Application start at version :" + version + "[" + buildDate + "] Kiosk Code :" + KioskCode + " BuildingCode :"+ BuildingCode + " FloorCode :" + FloorCode);
+            logger.Info("Application start at version :" + version + "[" + buildDate + "] Kiosk Code :" + KioskCode + " BuildingCode :" + BuildingCode + " FloorCode :" + FloorCode);
 
             //lblProgramInfo.Content = "True VMS System Version " + version + " Last Update " + buildDate;
 
@@ -903,15 +950,15 @@ namespace TrueVMS
             panelScanQR.Background = ib;
             panelWelcomeTrueIDC.Background = ib;
 
-           
+
 
             fileUrl = @"Resources\Keyboard\FullKeyboardBackground.png";
             ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(fileUrl, UriKind.RelativeOrAbsolute));
             panelFullKeyboardPopup.HorizontalAlignment = HorizontalAlignment.Center;
-            double left = Convert.ToDouble( ConfigurationManager.AppSettings["KeyboardBgLeft"]);
+            double left = Convert.ToDouble(ConfigurationManager.AppSettings["KeyboardBgLeft"]);
             double top = Convert.ToDouble(ConfigurationManager.AppSettings["KeyboardBgTop"]);
-            panelFullKeyboardPopup.Margin = new Thickness(left,top,0,0);
+            panelFullKeyboardPopup.Margin = new Thickness(left, top, 0, 0);
             //panelFullKeyboardPopup.HorizontalAlignment = HorizontalAlignment.Center;
             //panelFullKeyboardPopup.Orientation = Orientation.Horizontal;
 
@@ -992,7 +1039,7 @@ namespace TrueVMS
             {
                 //qrStr = "44&A12345&PASSPORT&01/12/2021 14:06:09&416&Emer#";
 
-                if (WORKING_TYPE!=WORKING_TYPE_CUSTOMER)
+                if (WORKING_TYPE != WORKING_TYPE_CUSTOMER)
                 {
                     logger.Error("Type missmatch between visitor type and qr");
                     return null;
@@ -1009,7 +1056,7 @@ namespace TrueVMS
 
                     string[] splitEnd = qrStr.Split('#');
 
-                    if(splitEnd.Length > 1)
+                    if (splitEnd.Length > 1)
                     {
                         qrStr = splitEnd[0];
                     }
@@ -1072,7 +1119,7 @@ namespace TrueVMS
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Error(ex.ToString());
                 return null;
@@ -1251,9 +1298,9 @@ namespace TrueVMS
         {
             try
             {
-                logger.Info("getDeviceID :" + workpermitid + " floor code :"+ FloorCode);
+                logger.Info("getDeviceID :" + workpermitid + " floor code :" + FloorCode);
 
-                var client = new RestClient(SERVER_API_URL + "/api/Kiosk/GetDoorByWorkpermitId/"+ workpermitid + ","+FloorCode);
+                var client = new RestClient(SERVER_API_URL + "/api/Kiosk/GetDoorByWorkpermitId/" + workpermitid + "," + FloorCode);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
@@ -1266,18 +1313,13 @@ namespace TrueVMS
 
                     return m.ToList<MLocationFloor>();
                 }
-                else
-                {
-                    return null;
-                }
 
-                return null;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                return null;
             }
+            return null;
         }
 
 
@@ -1296,18 +1338,13 @@ namespace TrueVMS
                 {
                     return m.ToList<MLocationFloor>();
                 }
-                else
-                {
-                    return null;
-                }
 
-                return null;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                return null;
             }
+            return null;
         }
 
 
@@ -1337,7 +1374,7 @@ namespace TrueVMS
                 List<MLocationFloor> devideID = null;
                 DateTime start = DateTime.MinValue;
                 DateTime end = DateTime.MinValue;
-                string customerCode = "", CustStaffCardId = "", CustStaffCardType = "", docId = ""; 
+                string customerCode = "", CustStaffCardId = "", CustStaffCardType = "", docId = "";
 
                 if (WORKPERMIT != null)
                 {
@@ -1371,7 +1408,7 @@ namespace TrueVMS
                 //string jsonString = JsonSerializer.Serialize(devideID);
 
                 int walkingObjId = -1;
-                if(WORKING_TYPE == WORKING_TYPE_WALKIN)
+                if (WORKING_TYPE == WORKING_TYPE_WALKIN)
                 {
                     //yy
                     //walkingObjId = Convert.ToInt32(cmbObjective.SelectedValue);
@@ -1382,7 +1419,7 @@ namespace TrueVMS
                 }
 
 
-                var taskFeedCard = Task.Run(async () => await feedCardAsync(start, end , customerCode
+                var taskFeedCard = Task.Run(async () => await feedCardAsync(start, end, customerCode
                     , CustStaffCardId, CustStaffCardType, docId, jsonString, walkingObjId));
                 taskFeedCard.Wait();
                 card = taskFeedCard.Result;
@@ -1398,7 +1435,7 @@ namespace TrueVMS
                         model.Description = "Read card (" + card + ") for spent card complete (Staff id : " + CustStaffCardId + ", Workpermit id : " + WORKPERMIT.WorkpermitId + ")";
                         model.Event = "Spent Card";
                         model.SubEvent = "Spent Card Success";
-                        model.WorkPermitID = Convert.ToInt64( WORKPERMIT.WorkpermitId);
+                        model.WorkPermitID = Convert.ToInt64(WORKPERMIT.WorkpermitId);
                         model.CardNo = card;
                     }
                     else
@@ -1438,7 +1475,7 @@ namespace TrueVMS
                 ActionLogModel model = newActionLogModel();
                 logger.Error(ex.ToString());
 
-                if(WORKPERMIT!=null)
+                if (WORKPERMIT != null)
                     model.Description = "Can not read card for spent card (Staff id : " + STAFF.CustStaffId + ", Workpermit id : " + WORKPERMIT.WorkpermitId + ")";
                 else
                     model.Description = "Can not read card for spent card (Staff id : " + STAFFEMER.CustStaffId + ", Project id : " + PROJECT.CustProjectId + ")";
@@ -1454,10 +1491,46 @@ namespace TrueVMS
 
                 try
                 {
-                    if ("102".Equals(ex.Message))
+                    if (ex.ToString().Contains("*1*"))
                     {
                         AlertBox aw = new AlertBox();
-                        aw.setMessage("Error", "Spent Card", "ไม่มีบัตรว่าง ทำให้ไม่สามารถแจกบัตรได้");
+                        aw.setMessage("1", "RFID reader not connect", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*2*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("2", "Card dispenser not connect", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*100*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("100", "Card empty", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*101*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("101", "Can not feed the card", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*102*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("102", "System have no master card id", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*103*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("103", "Can not write the card", "Can not dispend the card", "Please contact staff");
+                        aw.ShowDialog();
+                    }
+                    else if (ex.ToString().Contains("*104*"))
+                    {
+                        AlertBox aw = new AlertBox();
+                        aw.setMessage("104", "Please return card before", "Can not dispend the card", "Please contact staff");
                         aw.ShowDialog();
                     }
                     else
@@ -1496,15 +1569,15 @@ namespace TrueVMS
             {
                 string room = "";
 
-                if(devide.Count < 1)
+                if (devide.Count < 1)
                 {
                     return "";
                 }
 
                 int i = 0;
-                foreach(MLocationRoom m in devide[0].MLocationRooms)
+                foreach (MLocationRoom m in devide[0].MLocationRooms)
                 {
-                    room += m.Title+",";
+                    room += m.Title + ",";
 
                     ++i;
 
@@ -1541,7 +1614,7 @@ namespace TrueVMS
             if (WORKPERMIT != null)
             {
 
-                List<MLocationFloor> devide =  getDeviceID(WORKPERMIT.WorkpermitId);
+                List<MLocationFloor> devide = getDeviceID(WORKPERMIT.WorkpermitId);
 
                 string rooms = roomFromDevide(devide);
 
@@ -1726,9 +1799,17 @@ namespace TrueVMS
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request); //
-                Console.WriteLine(response.Content);
+                                                                  //Console.WriteLine(response.Content);
 
-                logger.Info("Call api for resend qr-code/sms result :"+ response.Content);
+                try
+                {
+                    logger.Info("SendCodeOTP StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("SendCodeOTP ContentLength :" + response.ContentLength);
+                    logger.Info("SendCodeOTP IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
+
+                logger.Info("Call api for resend qr-code/sms result :" + response.Content);
             }
             catch (Exception ex)
             {
@@ -1774,7 +1855,7 @@ namespace TrueVMS
             {
                 string[] a = email.Split('@');
 
-                return a[0].Substring(0, a[0].Length-2) + "**@**" + a[1].Substring(2, a[1].Length - 2);
+                return a[0].Substring(0, a[0].Length - 2) + "**@**" + a[1].Substring(2, a[1].Length - 2);
             }
             catch
             {
@@ -1795,10 +1876,10 @@ namespace TrueVMS
 
                 ActionLogModel model = newActionLogModel();
                 model.Event = "Resend OTP";
-                model.SubEvent = "Resend OTP more than 3 times.";   
-                if(STAFF!=null)
+                model.SubEvent = "Resend OTP more than 3 times.";
+                if (STAFF != null)
                     model.Description = "Staff " + STAFF.CustStaffName + " try to resend OTP more than 3 times.";
-                else if(STAFFEMER!=null)
+                else if (STAFFEMER != null)
                     model.Description = "Staff " + STAFFEMER.CustStaffName + " try to resend OTP more than 3 times.";
                 var task = Task.Run(async () => await addActionLog(model));
 
@@ -1822,7 +1903,7 @@ namespace TrueVMS
             {
                 getQRCodeOrOTP(1);
 
-                if(RESEND_OTP > 0)
+                if (RESEND_OTP > 0)
                 {
                     if (LANGUAGE == LANGUAGE_THAI)
                     {
@@ -1835,7 +1916,7 @@ namespace TrueVMS
 
                         lblOTPpanelScanQR.Content = "Or enter your OTP (Touch here)";
                         lblOTPpanelScanQR_panelEntryQR.Content = "Or enter your OTP (Touch here)";
-                        lblOTPpanelEntryOTP.Content = "Or enter your OTP (Touch here)";  
+                        lblOTPpanelEntryOTP.Content = "Or enter your OTP (Touch here)";
                     }
                 }
 
@@ -1903,7 +1984,8 @@ namespace TrueVMS
                 if (STAFF != null)
                 {
                     model.Description = "Staff " + STAFF.CustStaffName + " try to resend qr code more than 3 times.";
-                }else if (STAFFEMER != null)
+                }
+                else if (STAFFEMER != null)
                 {
                     model.Description = "Staff " + STAFFEMER.CustStaffName + " try to resend qr code more than 3 times.";
                 }
@@ -1950,7 +2032,7 @@ namespace TrueVMS
                     lblTitlepanelEntryQR2.Content = lblTitlepanelEntryQR2.Content + hideEmail(STAFFEMER.CustStaffEmail);
                 }
 
-                
+
 
                 if (LANGUAGE == LANGUAGE_THAI)
                     lblTitlepanelEntryQR4.Content = "ได้ในอีก " + MASTER_RESEND_QR_COUNT + " วินาที (ครั้งที่ " + RESEND_QR + "/3)";
@@ -1991,7 +2073,7 @@ namespace TrueVMS
             //showkeyboard
             panelFullKeyboardPopup.Visibility = Visibility.Visible;
             panelFullKeyboardPopup.HorizontalAlignment = HorizontalAlignment.Center;
-            
+
             fullKeyboardPopup.PlacementTarget = lblIDCardNumber;
             fullKeyboardPopup.HorizontalAlignment = HorizontalAlignment.Center;
             fullKeyboardPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
@@ -2094,8 +2176,8 @@ namespace TrueVMS
             ActionLogModel model = newActionLogModel();
             model.Event = "System";
             model.SubEvent = "Kiosk alive";
-            model.Description = "Kiosk " + KioskCode + " is alive on IP :" + NodeIP + " Location ID :" + LocationCode 
-                              + " Building ID :" + BuildingCode + " Floor :"+FloorCode;
+            model.Description = "Kiosk " + KioskCode + " is alive on IP :" + NodeIP + " Location ID :" + LocationCode
+                              + " Building ID :" + BuildingCode + " Floor :" + FloorCode;
             //var task = Task.Run(async () => await addActionLog(model));
         }
 
@@ -2104,14 +2186,14 @@ namespace TrueVMS
             try
             {
                 ++timeWaitForCallDll;
-                if(timeWaitForCallDll == 2)
+                if (timeWaitForCallDll == 2)
                 {
 
                     timerCallReturnCardDll.Stop();
 
                     if (threadCallReturnCard != null)
                     {
-                        logger.Info("threadCallReturnCard.ThreadState :"+ threadCallReturnCard.ThreadState);
+                        logger.Info("threadCallReturnCard.ThreadState :" + threadCallReturnCard.ThreadState);
                         if (threadCallReturnCard.ThreadState == ThreadState.Running || threadCallReturnCard.ThreadState == ThreadState.Background)
                         {
                             threadCallReturnCard.Abort();
@@ -2123,7 +2205,7 @@ namespace TrueVMS
                     threadCallReturnCard.Start();
 
                     //connectReturnCardDll();
-                    
+
                 }
             }
             catch { }
@@ -2225,7 +2307,8 @@ namespace TrueVMS
                         {
                             ShowEntryPanel();
                         }
-                        else {
+                        else
+                        {
                             panelScreenSaver.Visibility = Visibility.Visible;
                         }
                     }
@@ -2244,76 +2327,89 @@ namespace TrueVMS
 
         private void clearControl()
         {
-            try { 
-            //LANGUAGE = LANGUAGE_THAI;
-            WORKING_TYPE = -1;
-            CARD = "";
-            IDCARD_NOT_CORRECT_COUNT = 0;
+            try
+            {
+                if (threadCallReturnCard != null)
+                {
+                    //if (reader != null)
+                    //{
+                    //    reader.Close();
+                    //}
+                    threadCallReturnCard.Abort();
+                }
+            }
+            catch { }
+            try
+            {
+                //LANGUAGE = LANGUAGE_THAI;
+                WORKING_TYPE = -1;
+                CARD = "";
+                IDCARD_NOT_CORRECT_COUNT = 0;
                 WALKIN_OBJ = -1;
                 WALKIN_OBJ_TXT = "";
 
-            if (LANGUAGE == LANGUAGE_THAI)
-            {
-                lblOTPpanelScanQR.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
-                lblOTPpanelScanQR_panelEntryQR.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
-                lblIDCardNumber.Content = "เสียบบัตรหรือกดตัวเลข(แตะที่นี่)";
-                lblOTPpanelEntryOTP.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
-            }
-            else
-            {
-                lblOTPpanelScanQR.Content = "Or enter your OTP (Touch here)";
-                lblOTPpanelScanQR_panelEntryQR.Content = "Or enter your OTP (Touch here)";
-                lblOTPpanelEntryOTP.Content = "Or enter your OTP (Touch here)";
-                lblIDCardNumber.Content = "Insert card or entry number"; 
-            }
+                if (LANGUAGE == LANGUAGE_THAI)
+                {
+                    lblOTPpanelScanQR.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
+                    lblOTPpanelScanQR_panelEntryQR.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
+                    lblIDCardNumber.Content = "เสียบบัตรหรือกดตัวเลข(แตะที่นี่)";
+                    lblOTPpanelEntryOTP.Content = "หรือกรอกรหัส OTP ที่ได้รับ(แตะที่นี่)";
+                }
+                else
+                {
+                    lblOTPpanelScanQR.Content = "Or enter your OTP (Touch here)";
+                    lblOTPpanelScanQR_panelEntryQR.Content = "Or enter your OTP (Touch here)";
+                    lblOTPpanelEntryOTP.Content = "Or enter your OTP (Touch here)";
+                    lblIDCardNumber.Content = "Insert card or entry number";
+                }
 
-            lblRequestNewOTP_panelEntryOTP.IsEnabled = false;
-            lblRequestNewOTP_panelEntryOTP.Foreground = new SolidColorBrush(Colors.Gray);
+                lblRequestNewOTP_panelEntryOTP.IsEnabled = false;
+                lblRequestNewOTP_panelEntryOTP.Foreground = new SolidColorBrush(Colors.Gray);
 
-            lblRequestNewQR_panelEntryQR.IsEnabled = false;
-            lblRequestNewQR_panelEntryQR.Foreground = new SolidColorBrush(Colors.Gray);
+                lblRequestNewQR_panelEntryQR.IsEnabled = false;
+                lblRequestNewQR_panelEntryQR.Foreground = new SolidColorBrush(Colors.Gray);
 
-            lblTitlePanelDisplayProject2.Content = "";
-            lblTitlePanelDisplayProject3.Content = "";
-            lblTitlePanelDisplayProject3_ROOM.Content = "";
-            lblTitlePanelDisplayProject4.Content = "";
-            lblTitlePanelDisplayProject5.Content = "";
-            lblTitlePanelDisplayProject6.Content = "";
-            lblTitlePanelDisplayProject7.Content = "";
+                lblTitlePanelDisplayProject2.Content = "";
+                lblTitlePanelDisplayProject3.Content = "";
+                lblTitlePanelDisplayProject3_ROOM.Content = "";
+                lblTitlePanelDisplayProject4.Content = "";
+                lblTitlePanelDisplayProject5.Content = "";
+                lblTitlePanelDisplayProject6.Content = "";
+                lblTitlePanelDisplayProject7.Content = "";
 
-            
 
-            RESEND_OTP = 0;
-            resendOTPCount = MASTER_RESEND_OTP_COUNT;
 
-            RESEND_QR = 0;
-            resendQRCount = MASTER_RESEND_QR_COUNT;
+                RESEND_OTP = 0;
+                resendOTPCount = MASTER_RESEND_OTP_COUNT;
 
-            this.cmbObjective.SelectedIndex = 0;
+                RESEND_QR = 0;
+                resendQRCount = MASTER_RESEND_QR_COUNT;
 
-            WORKPERMIT = null;
-            ALL_WORKPERMIT = null;
-            STAFF = null;
+                this.cmbObjective.SelectedIndex = 0;
+
+                WORKPERMIT = null;
+                ALL_WORKPERMIT = null;
+                STAFF = null;
                 PROJECT = null;
                 ALL_PROJECT = null;
                 STAFFEMER = null;
 
-            readQRCode.Text = "";
-            readQRCodeEmer.Text = "";
+                readQRCode.Text = "";
+                readQRCodeEmer.Text = "";
 
-            projectLstBox.Items.Clear();
-            workpermitLstBox.Items.Clear();
+                projectLstBox.Items.Clear();
+                workpermitLstBox.Items.Clear();
 
-            btnReturnCard.IsEnabled = true;
+                btnReturnCard.IsEnabled = true;
 
 
-            this.idCardOrPassportNumber = "";
-            this.cardType = "";
+                this.idCardOrPassportNumber = "";
+                this.cardType = "";
 
-            if (alertWindow != null)
-            {
-                alertWindow.Hide();
-            }
+                if (alertWindow != null)
+                {
+                    alertWindow.Hide();
+                }
             }
             catch (Exception ex)
             {
@@ -2328,20 +2424,13 @@ namespace TrueVMS
                     panelFullKeyboardPopup.Visibility = Visibility.Hidden;
                 }
 
-                if (popupNumPad!=null)
+                if (popupNumPad != null)
                 {
                     targetTextbox = null;
                     popupNumPad.IsOpen = false;
                 }
 
-                if (threadCallReturnCard != null)
-                {
-                    if (reader != null)
-                    {
-                        reader.Close();
-                    }
-                    threadCallReturnCard.Abort();
-                }
+
             }
             catch (Exception ex)
             {
@@ -2378,7 +2467,7 @@ namespace TrueVMS
                  lblTime.Content = label;
              }*/
 
-                    lblTime.Content = label;
+            lblTime.Content = label;
         }
 
         #endregion
@@ -2423,7 +2512,7 @@ namespace TrueVMS
                 logger.Info("homeVideo.Clock.IsPaused :" + homeVideo.Clock.IsPaused);*/
 
                 System.GC.Collect();
-                
+
                 homeVideo.Play();
                 timer.Stop();
                 CURRENT_PANEL = p;
@@ -2554,7 +2643,7 @@ namespace TrueVMS
             Button btn = (Button)e.OriginalSource;
             string s = btn.Content.ToString();
 
-            
+
 
             if (s == "X")
             {
@@ -2665,7 +2754,7 @@ namespace TrueVMS
 
             if (WORKING_TYPE == this.WORKING_TYPE_WALKIN)
             {
-                if(cmbObjective.SelectedIndex < 1 )
+                if (cmbObjective.SelectedIndex < 1)
                 {
                     if (LANGUAGE == LANGUAGE_THAI)
                     {
@@ -2700,20 +2789,24 @@ namespace TrueVMS
             if (Regex.IsMatch(idCardOrPassportNumber, @"^[0-9]+$") && lblIDCardNumber.Content.ToString().Length == 13)
             {
                 cardType = "ID";
-            } else if (Regex.IsMatch(idCardOrPassportNumber, @"^[a-zA-Z0-9]+$"))
-            {
-                cardType = "PASSPORT";
-            } else if (lblIDCardNumber.Content.ToString().Length != 13)
+            }
+            else if (Regex.IsMatch(idCardOrPassportNumber, @"^[a-zA-Z0-9]+$"))
             {
                 cardType = "PASSPORT";
             }
-            logger.Info("Start checking id-card/passport :"+ hideIdCard(idCardOrPassportNumber) + " cardType :"+ cardType);
+            else if (lblIDCardNumber.Content.ToString().Length != 13)
+            {
+                cardType = "PASSPORT";
+            }
+            logger.Info("Start checking id-card/passport :" + hideIdCard(idCardOrPassportNumber) + " cardType :" + cardType);
 
 
             if (WORKING_TYPE == this.WORKING_TYPE_WALKIN)
             {
                 //Check id card 
+                logger.Info("Start checkWalkinIdCardOrPassport");
                 List<CustProjectVw> allProjectVw = checkWalkinIdCardOrPassport(idCardOrPassportNumber, cardType, DateTime.Now);
+                logger.Info("End checkWalkinIdCardOrPassport");
                 if (allProjectVw == null || allProjectVw.Count == 0)
                 {
                     logger.Info("ไม่พบข้อมูล id-card/passport ในช่วงเวลาที่ระบุ :" + hideIdCard(idCardOrPassportNumber));
@@ -2743,8 +2836,8 @@ namespace TrueVMS
                         {
                             alertWindow.setMessage("Error", "Your data is not correct 5 times", "Please contact administrator");
                         }
-                            
-                            alertWindow.ShowDialog();
+
+                        alertWindow.ShowDialog();
 
                         ShowEntryPanel();
                     }
@@ -2757,10 +2850,12 @@ namespace TrueVMS
                     IDCARD_NOT_CORRECT_COUNT = 0;
 
                     PROJECT = allProjectVw[0];
+
+                    logger.Info("Start getStaffEmerDetail");
                     STAFFEMER = getStaffEmerDetail(Convert.ToString(PROJECT.CustProjectId), idCardOrPassportNumber, cardType);
+                    logger.Info("End getStaffEmerDetail");
 
-
-                    logger.Info("พบข้อมูล id-card/passport :" + hideIdCard(idCardOrPassportNumber) + " พบ project 1 รายการคือ :" + PROJECT.CustProjectName +  " STAFF-EMER :" + STAFFEMER.CustStaffName);
+                    logger.Info("พบข้อมูล id-card/passport :" + hideIdCard(idCardOrPassportNumber) + " พบ project 1 รายการคือ :" + PROJECT.CustProjectName + " STAFF-EMER :" + STAFFEMER.CustStaffName);
 
                     if (Convert.ToDecimal(LAST_TC_TH.Version) > (STAFFEMER.TcVersion) || STAFFEMER.TcVersion == null)
                     {
@@ -2947,8 +3042,14 @@ namespace TrueVMS
             @"}";
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
-
+            //Console.WriteLine(response.Content);
+            try
+            {
+                logger.Info("GetWalkinObjective StatusCode :" + response.StatusCode.ToString());
+                logger.Info("GetWalkinObjective ContentLength :" + response.ContentLength);
+                logger.Info("GetWalkinObjective IsSuccessful :" + response.IsSuccessful);
+            }
+            catch { }
             IEnumerable<MWalkinObjective> m = JsonConvert.DeserializeObject<IEnumerable<MWalkinObjective>>(response.Content);
 
             cmbObjective.Items.Clear();
@@ -2985,11 +3086,11 @@ namespace TrueVMS
 
                 if (WORKPERMIT != null)
                 {
-                    model.WorkPermitID =Convert.ToInt64( WORKPERMIT.WorkpermitId);
+                    model.WorkPermitID = Convert.ToInt64(WORKPERMIT.WorkpermitId);
                     model.walkinObjectiveID = -1;
                 }
 
-                if( PROJECT!= null && model.walkinObjectiveID>0)
+                if (PROJECT != null && model.walkinObjectiveID > 0)
                 {
                     model.WorkPermitID = Convert.ToInt64(PROJECT.CustProjectId);
                     model.walkinObjectiveID = WALKIN_OBJ;
@@ -3056,8 +3157,15 @@ namespace TrueVMS
                     logger.Info(body);
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
-                IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                IRestResponse response = await client.ExecuteAsync(request);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("AddActionLog StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("AddActionLog ContentLength :" + response.ContentLength);
+                    logger.Info("AddActionLog IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
             }
             catch (Exception ex)
             {
@@ -3069,7 +3177,7 @@ namespace TrueVMS
         {
 
             var ci = new CultureInfo("en-US");
-            return dt.ToString("yyyy-MM-dd HH:mm:ss",ci);
+            return dt.ToString("yyyy-MM-dd HH:mm:ss", ci);
         }
 
         private List<WorkpermitVw> checkStaffIdCardOrPassport(string cardNo, string cardType, DateTime dt)
@@ -3095,12 +3203,19 @@ namespace TrueVMS
 @"    ""LocationFloorId"": """ + FloorCode + @"""
 " + "\n" +
 @"}";
-                if(IS_DEBUG)
-                logger.Info(body);
+                if (IS_DEBUG)
+                    logger.Info(body);
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("GetWorkpermitsByIDCard StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("GetWorkpermitsByIDCard ContentLength :" + response.ContentLength);
+                    logger.Info("GetWorkpermitsByIDCard IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
 
                 IEnumerable<WorkpermitVw> m = JsonConvert.DeserializeObject<IEnumerable<WorkpermitVw>>(response.Content);
                 if (m != null)
@@ -3149,8 +3264,14 @@ namespace TrueVMS
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
-
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("GetProjectsByIDCard StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("GetProjectsByIDCard ContentLength :" + response.ContentLength);
+                    logger.Info("GetProjectsByIDCard IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
                 IEnumerable<CustProjectVw> m = JsonConvert.DeserializeObject<IEnumerable<CustProjectVw>>(response.Content);
                 if (m != null)
                 {
@@ -3171,7 +3292,7 @@ namespace TrueVMS
         private void btnNext_panelTC_TouchDown(object sender, TouchEventArgs e)
         {
             string email = "";
-            if(WORKING_TYPE == WORKING_TYPE_WALKIN)
+            if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
             }
@@ -3237,95 +3358,108 @@ namespace TrueVMS
         Thread threadCallReturnCard = null;
 
         private void connectReturnCardDll()
-        {           
+        {
 
-                try
+            try
+            {
+                logger.Info("Start call dll for return card");
+
+                Thread.CurrentThread.IsBackground = true;
+                CARD = readCardForReturnAsync().Result;
+
+                ActionLogModel model = newActionLogModel();
+
+                if (CARD != "")
                 {
-                    logger.Info("Start call dll for return card");
-                   
-                    Thread.CurrentThread.IsBackground = true;
-                    CARD = readCardForReturnAsync().Result;                
+                    //model.Description = "Read card for retrun card complete";
+                    //model.Event = "Return Card";
+                    //model.SubEvent = "Return Card Success";
+                    //model.CardNo = CARD;
+                    //var task = Task.Run(async () => await addActionLog(model));
 
+
+                    //var task2 = Task.Run(async () => await addDistributeCardLog("COLLECTED", CARD));
+                    logger.Info("Return Card Success :" + CARD);
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+                    {
+
+
+                        ShowPanelReturnCardSuccess();
+
+                    }), DispatcherPriority.Background);
+
+                }
+                else
+                {
+                    if (CURRENT_PANEL == panelReturnCard)
+                    {
+                        //model.Description = "Can not read card for retrun card";
+                        //model.Event = "Return Card";
+                        //model.SubEvent = "Return Card Not Success";
+                        //logger.Info("Return Card Not Success");
+                        //var task = Task.Run(async () => await addActionLog(model));
+
+                        //alertWindow.setMessage("Error", "Card Return", "Return Card Not Success");
+                        //alertWindow.ShowDialog();
+
+
+                        logger.Info("Return Card Not Success");
+
+                        throw new Exception("Return Card Not Success");
+                    }
+                }
+
+            }
+            catch (ThreadAbortException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                if (CURRENT_PANEL == panelReturnCard)
+                {
                     ActionLogModel model = newActionLogModel();
+                    logger.Error(ex.ToString());
+                    model.Description = "Can not read card for retrun card " + ex.ToString();
+                    model.Event = "Return Card";
+                    model.SubEvent = "Return Card Not Success";
+                    var task = Task.Run(async () => await addActionLog(model));
+                    logger.Info("Return Card Not Success");
 
-                    if (CARD != "")
+                    //if (IS_DEBUG)
+                    //    MessageBox.Show(ex.ToString());
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(delegate
                     {
-                        model.Description = "Read card for retrun card complete";
-                        model.Event = "Return Card";
-                        model.SubEvent = "Return Card Success";
-                        model.CardNo = CARD;
-                        var task = Task.Run(async () => await addActionLog(model));
 
+                        //AlertBox aw = new AlertBox();
 
-                        var task2 = Task.Run(async () => await addDistributeCardLog("COLLECTED", CARD));
-                        logger.Info("Return Card Success :" + CARD);
-
-                        Application.Current.Dispatcher.BeginInvoke(new Action(delegate
+                        //alertWindow.setMessage("Error", "Card Return", "Return Card Not Success: Can not connect device ");
+                        if (ex.ToString().Contains("*1*"))
                         {
-
-
-                            ShowPanelReturnCardSuccess();
-
-                        }), DispatcherPriority.Background);
-
-                    }
-                    else
-                    {
-                            if (CURRENT_PANEL == panelReturnCard)
-                            {
-                                model.Description = "Can not read card for retrun card";
-                                model.Event = "Return Card";
-                                model.SubEvent = "Return Card Not Success";
-                                logger.Info("Return Card Not Success");
-                                var task = Task.Run(async () => await addActionLog(model));
-
-                                //alertWindow.setMessage("Error", "Card Return", "Return Card Not Success");
-                                //alertWindow.ShowDialog();
-
-
-                                logger.Info("Return Card Not Success");
-
-                                throw new Exception("Return Card Not Success");
-                            }
-                    }
-
-                    }
-                    catch (ThreadAbortException ex1)
-                    {
-
-                    }
-                    catch (Exception ex)
-                    {
-                        if (CURRENT_PANEL == panelReturnCard)
-                        {
-                            ActionLogModel model = newActionLogModel();
-                            logger.Error(ex.ToString());
-                            model.Description = "Can not read card for retrun card " + ex.ToString();
-                            model.Event = "Return Card";
-                            model.SubEvent = "Return Card Not Success";
-                            var task = Task.Run(async () => await addActionLog(model));
-                            logger.Info("Return Card Not Success");
-
-                            //if (IS_DEBUG)
-                            //    MessageBox.Show(ex.ToString());
-
-                            Application.Current.Dispatcher.BeginInvoke(new Action(delegate
-                            {
-
-                                //AlertBox aw = new AlertBox();
-
-                                //alertWindow.setMessage("Error", "Card Return", "Return Card Not Success: Can not connect device ");
-                                alertWindow.setMessage("Error", "Return Card Not Success", ex.Message);
-                                alertWindow.ShowDialog();
-
-                            }), DispatcherPriority.Background);
-                            
-
-                            //throw ex;
-                            logger.Error(ex.ToString());
+                            alertWindow.setMessage("1", "RFID reader not connect", "Can not return the card", "Please contact staff");
+                            alertWindow.ShowDialog();
                         }
-                    }
-                     
+                        else if (ex.ToString().Contains("*2*"))
+                        {
+                            alertWindow.setMessage("2", "Card dispenser not connect", "Can not return the card", "Please contact staff");
+                            alertWindow.ShowDialog();
+                        }
+                        else
+                        {
+                            alertWindow.setMessage("Error", "Return Card Not Success", ex.Message);
+                            alertWindow.ShowDialog();
+                        }
+
+                    }), DispatcherPriority.Background);
+
+
+                    //throw ex;
+                    logger.Error(ex.ToString());
+                }
+            }
+
         }
 
 
@@ -3445,16 +3579,16 @@ namespace TrueVMS
             }
         }
 
-        private async Task<String> feedCardAsync(DateTime StartDate, DateTime EndDate, string projectCode,string idcardNumber, 
+        private async Task<String> feedCardAsync(DateTime StartDate, DateTime EndDate, string projectCode, string idcardNumber,
             string cardtype, string WorkpremitID, string deviceList, int walkinObjective)
         {
             try
             {
                 string json = @"{
 " + "\n" +
-                @"    ""StartDate"": """ + convertDatetime(StartDate)   + @""",
+                @"    ""StartDate"": """ + convertDatetime(StartDate) + @""",
 " + "\n" +
-                @"    ""EndDate"":""" + convertDatetime(EndDate)  + @""",
+                @"    ""EndDate"":""" + convertDatetime(EndDate) + @""",
 " + "\n" +
                 @"    ""ProjectCode"":""" + projectCode + @""",
 " + "\n" +
@@ -3476,8 +3610,8 @@ namespace TrueVMS
 " + "\n" +
                 @"}";
 
-                if(IS_DEBUG)
-                logger.Info(json);
+                if (IS_DEBUG)
+                    logger.Info(json);
 
 
                 RFIDCard.RFIDCardReader reader = new RFIDCard.RFIDCardReader();
@@ -3492,23 +3626,36 @@ namespace TrueVMS
                     ActionLogModel model = newActionLogModel();
                     model.Description = "Can not initail rfid-reader code " + initialReaderResult.ResponseCode + " " + initialReaderResult.ResponseDescription;
                     model.Event = "Hardware";
-                    model.SubEvent = "Feed card error code "+initialReaderResult.ResponseCode;
+                    model.SubEvent = "Feed card error code " + initialReaderResult.ResponseCode;
                     var task = Task.Run(async () => await addActionLog(model));
 
-                    throw new Exception("Can not initail rfid-reader : " + initialReaderResult.ResponseCode + " " + initialReaderResult.ResponseDescription);
+                    throw new Exception("Can not initail rfid-reader : *" + initialReaderResult.ResponseCode + "* " + initialReaderResult.ResponseDescription);
                 }
 
-               
 
 
 
-            var datafeedout = await reader.Read(json);
+
+                var datafeedout = await reader.Read(json);
 
 
                 logger.Info("feedCardAsync datafeedout :" + datafeedout.ResponseCode);
                 logger.Info("feedCardAsync ResponseDescription :" + datafeedout.ResponseDescription);
 
-                if ("102".Equals(initialReaderResult.ResponseCode))
+                //if ("102".Equals(initialReaderResult.ResponseCode))
+                //{
+                //    ActionLogModel model = newActionLogModel();
+                //    model.Description = "Can not feed card code " + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription;
+                //    model.Event = "Hardware";
+                //    model.SubEvent = "Feed card error code " + datafeedout.ResponseCode;
+                //    var task = Task.Run(async () => await addActionLog(model));
+
+
+                //    throw new Exception("Can not feed card : *" + datafeedout.ResponseCode + "* " + datafeedout.ResponseDescription);
+                //    //throw new Exception("102");
+                //}
+                //else 
+                if (!"0".Equals(datafeedout.ResponseCode))
                 {
                     ActionLogModel model = newActionLogModel();
                     model.Description = "Can not feed card code " + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription;
@@ -3516,19 +3663,7 @@ namespace TrueVMS
                     model.SubEvent = "Feed card error code " + datafeedout.ResponseCode;
                     var task = Task.Run(async () => await addActionLog(model));
 
-
-                    throw new Exception("Can not feed card :" + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription);
-                    //throw new Exception("102");
-                }
-                else if(!"0".Equals(datafeedout.ResponseCode))
-                {
-                    ActionLogModel model = newActionLogModel();
-                    model.Description = "Can not feed card code " + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription;
-                    model.Event = "Hardware";
-                    model.SubEvent = "Feed card error code " + datafeedout.ResponseCode;
-                    var task = Task.Run(async () => await addActionLog(model));
-
-                    throw new Exception("Can not feed card :" + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription);
+                    throw new Exception("Can not feed card : *" + datafeedout.ResponseCode + "* " + datafeedout.ResponseDescription);
                 }
 
                 logger.Info("feedCardAsync datafeedout.IDCard :" + datafeedout.IDCard);
@@ -3566,7 +3701,7 @@ namespace TrueVMS
                 logger.Info("readCardForReturnAsync initialReaderResult.ResponseDescription :" + initialReaderResult.ResponseDescription);
                 if (!"0".Equals(initialReaderResult.ResponseCode))
                 {
-                    throw new Exception("Can not initail rfid-reader : " + initialReaderResult.ResponseCode + " " + initialReaderResult.ResponseDescription);
+                    throw new Exception("Can not initail rfid-reader : *" + initialReaderResult.ResponseCode + "* " + initialReaderResult.ResponseDescription);
                 }
 
                 logger.Info("readCardForReturnAsync before call cardreturn()");
@@ -3589,7 +3724,7 @@ namespace TrueVMS
 
 
 
-                    throw new Exception("Can not read card :" + datafeedout.ResponseCode + " " + datafeedout.ResponseDescription);
+                    throw new Exception("Can not read card : *" + datafeedout.ResponseCode + "* " + datafeedout.ResponseDescription);
                 }
 
 
@@ -3690,8 +3825,16 @@ namespace TrueVMS
 
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
+
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("getWorkpermitByOTP StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("getWorkpermitByOTP ContentLength :" + response.ContentLength);
+                    logger.Info("getWorkpermitByOTP IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
                 IEnumerable<WorkpermitVw> m = JsonConvert.DeserializeObject<IEnumerable<WorkpermitVw>>(response.Content);
 
                 return m.ToList();
@@ -3730,7 +3873,14 @@ namespace TrueVMS
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("getProjectByOTP StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("getProjectByOTP ContentLength :" + response.ContentLength);
+                    logger.Info("getProjectByOTP IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
                 IEnumerable<CustProjectVw> m = JsonConvert.DeserializeObject<IEnumerable<CustProjectVw>>(response.Content);
 
                 return m.ToList();
@@ -3834,35 +3984,35 @@ namespace TrueVMS
                 //alertWindow.setMessage("Error", "OTP ไม่สอดคล้องกับข้อมูลในระบบ", "OTP not match with work permit information");
                 //alertWindow.ShowDialog();
 
-               
-                    if (IDCARD_NOT_CORRECT_COUNT < 5)
+
+                if (IDCARD_NOT_CORRECT_COUNT < 5)
+                {
+                    if (LANGUAGE == LANGUAGE_THAI)
                     {
-                        if (LANGUAGE == LANGUAGE_THAI)
-                        {
-                            alertWindow.setMessage("การยืนยันตัวตันครั้งที่ " + IDCARD_NOT_CORRECT_COUNT + "/5", "ข้อมูลไม่ถูกต้องกรุณาระบุข้อมูลใหม่", "");
+                        alertWindow.setMessage("การยืนยันตัวตันครั้งที่ " + IDCARD_NOT_CORRECT_COUNT + "/5", "ข้อมูลไม่ถูกต้องกรุณาระบุข้อมูลใหม่", "");
 
-                        }
-                        else
-                        {
-                            alertWindow.setMessage("OTP not match with work permit information (" + IDCARD_NOT_CORRECT_COUNT + "/5)", "Incorrect Data", "");
-
-                        }
-
-                        //alertWindow.setMessage("การยืนยันตัวตันครั้งที่ "+IDCARD_NOT_CORRECT_COUNT +"/5", "ข้อมูลไม่ถูกต้องกรุณาระบุข้อมูลใหม่", "OTP not match with work permit information (" + IDCARD_NOT_CORRECT_COUNT + "/5 times)");
-
-                        alertWindow.ShowDialog();
                     }
                     else
                     {
-                        if (LANGUAGE == LANGUAGE_THAI)
-                        {
-                            alertWindow.setMessage("Error", "เนื่องจากท่านยืนยันตัวตนผิดเป็นจำนวน 5 ครั้ง", "ระบบไม่สามารถออกบัตรให้ท่านได้กรุณาติดต่อเจ้าหน้าที่");
-                        }
-                        else
-                        {
-                            alertWindow.setMessage("Error", "Your data is not correct 5 times", "Please contact administrator");
-                        }
-                    
+                        alertWindow.setMessage("OTP not match with work permit information (" + IDCARD_NOT_CORRECT_COUNT + "/5)", "Incorrect Data", "");
+
+                    }
+
+                    //alertWindow.setMessage("การยืนยันตัวตันครั้งที่ "+IDCARD_NOT_CORRECT_COUNT +"/5", "ข้อมูลไม่ถูกต้องกรุณาระบุข้อมูลใหม่", "OTP not match with work permit information (" + IDCARD_NOT_CORRECT_COUNT + "/5 times)");
+
+                    alertWindow.ShowDialog();
+                }
+                else
+                {
+                    if (LANGUAGE == LANGUAGE_THAI)
+                    {
+                        alertWindow.setMessage("Error", "เนื่องจากท่านยืนยันตัวตนผิดเป็นจำนวน 5 ครั้ง", "ระบบไม่สามารถออกบัตรให้ท่านได้กรุณาติดต่อเจ้าหน้าที่");
+                    }
+                    else
+                    {
+                        alertWindow.setMessage("Error", "Your data is not correct 5 times", "Please contact administrator");
+                    }
+
                     alertWindow.ShowDialog();
 
                     ShowEntryPanel();
@@ -3946,7 +4096,7 @@ namespace TrueVMS
                     {
                         alertWindow.setMessage("Error", "Your data is not correct 5 times", "Please contact administrator");
                     }
-                    
+
                     alertWindow.ShowDialog();
 
                     ShowEntryPanel();
@@ -4085,12 +4235,12 @@ namespace TrueVMS
         {
             if (STAFF != null)
             {
-                decimal ver = 0;               
+                decimal ver = 0;
                 if (STAFF.PrivacyMarketingVersion != null)
                     ver = STAFF.PrivacyMarketingVersion.Value;
-                
 
-                if (Convert.ToDecimal(LAST_PRIVACY_MARKETING_TH.Version) > ver )
+
+                if (Convert.ToDecimal(LAST_PRIVACY_MARKETING_TH.Version) > ver)
                 {
                     ShowPanelPrivacyMarketing();
                 }
@@ -4100,7 +4250,7 @@ namespace TrueVMS
                     if (STAFF.PrivacySensitiveVersion != null)
                         ver = STAFF.PrivacySensitiveVersion.Value;
 
-                    if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver ) 
+                    if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver)
                     {
                         ShowPanelPrivacySensitive();
                     }
@@ -4180,7 +4330,7 @@ namespace TrueVMS
             }
 
 
-            addTcPrivacyAccept(2,0,LAST_PRIVACY_MARKETING_TH.Version,email);
+            addTcPrivacyAccept(2, 0, LAST_PRIVACY_MARKETING_TH.Version, email);
 
             if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver)
             {
@@ -4212,7 +4362,7 @@ namespace TrueVMS
             }
 
 
-            addTcPrivacyAccept(2, 2, LAST_PRIVACY_MARKETING_TH.Version , email);
+            addTcPrivacyAccept(2, 2, LAST_PRIVACY_MARKETING_TH.Version, email);
             if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver)
             {
                 ShowPanelPrivacySensitive();
@@ -4265,8 +4415,8 @@ namespace TrueVMS
 
         private WorkpermitStaffMappingVw getStaffDetail(string workpermitID, string idcardPassportNo, string cardType)
         {
-            try 
-            { 
+            try
+            {
                 var client = new RestClient(SERVER_API_URL + "/api/kiosk/GetStaffDetail");
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -4288,7 +4438,14 @@ namespace TrueVMS
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("getStaffDetail StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("getStaffDetail ContentLength :" + response.ContentLength);
+                    logger.Info("getStaffDetail IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
 
 
                 IEnumerable<WorkpermitStaffMappingVw> m = JsonConvert.DeserializeObject<IEnumerable<WorkpermitStaffMappingVw>>(response.Content);
@@ -4301,7 +4458,7 @@ namespace TrueVMS
                 logger.Error(ex.ToString());
                 return null;
             }
-       }
+        }
 
 
         private CustStaffVw getStaffEmerDetail(string projectID, string idcardPassportNo, string cardType)
@@ -4328,7 +4485,14 @@ namespace TrueVMS
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("getStaffEmerDetail StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("getStaffEmerDetail ContentLength :" + response.ContentLength);
+                    logger.Info("getStaffEmerDetail IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
 
 
                 IEnumerable<CustStaffVw> m = JsonConvert.DeserializeObject<IEnumerable<CustStaffVw>>(response.Content);
@@ -4353,7 +4517,7 @@ namespace TrueVMS
          * 1=NotAccept
          * 2=Skip         
          */
-        private void addTcPrivacyAccept(int doctype, int action, string version,string email)
+        private void addTcPrivacyAccept(int doctype, int action, string version, string email)
         {
             try
             {
@@ -4369,17 +4533,17 @@ namespace TrueVMS
 " + "\n" +
                 @"    ""CustStaffEmail"": """ + email + @""",
 " + "\n" +
-                @"    ""LogVersion"":"""+version+@""",
+                @"    ""LogVersion"":""" + version + @""",
 " + "\n" +
-                @"    ""IPAddress"":"""+ NodeIP + @""",
+                @"    ""IPAddress"":""" + NodeIP + @""",
 " + "\n" +
-                @"    ""Language"":"""+ LANGUAGE + @""",
+                @"    ""Language"":""" + LANGUAGE + @""",
 " + "\n" +
-                @"    ""DocType"":"""+ doctype + @""",
+                @"    ""DocType"":""" + doctype + @""",
 " + "\n" +
-                @"    ""Action"":"""+ action+@""",
+                @"    ""Action"":""" + action + @""",
 " + "\n" +
-                @"    ""ActionDate"":"""+ logTime + @""",
+                @"    ""ActionDate"":""" + logTime + @""",
 " + "\n" +
                 @"    ""ActionChanel"":""1""
 " + "\n" +
@@ -4390,7 +4554,14 @@ namespace TrueVMS
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("addTcPrivacyAccept StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("addTcPrivacyAccept ContentLength :" + response.ContentLength);
+                    logger.Info("addTcPrivacyAccept IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
+                //Console.WriteLine(response.Content);
             }
             catch (Exception ex)
             {
@@ -4454,14 +4625,14 @@ namespace TrueVMS
                 if (IS_DEBUG)
                     MessageBox.Show(ex.ToString());
 
-                alertWindow.setMessage("Error", "Card Return", "Return Card Not Success : Can not connect device" );
+                alertWindow.setMessage("Error", "Card Return", "Return Card Not Success : Can not connect device");
                 alertWindow.ShowDialog();
             }
 
 
         }
 
-        private async Task addDistributeCardLog(string cardStatus,string cardnumber)
+        private async Task addDistributeCardLog(string cardStatus, string cardnumber)
         {
             try
             {
@@ -4488,7 +4659,8 @@ namespace TrueVMS
                         }
                     }
                 }
-                catch(Exception ex) {
+                catch (Exception ex)
+                {
                     logger.Error(ex.ToString());
                 }
 
@@ -4597,12 +4769,19 @@ namespace TrueVMS
                 }
 
 
-               // if (IS_DEBUG)
-                    logger.Info(body);
+                // if (IS_DEBUG)
+                logger.Info(body);
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
-                IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                IRestResponse response = await client.ExecuteAsync(request);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("addDistributeCardLog StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("addDistributeCardLog ContentLength :" + response.ContentLength);
+                    logger.Info("addDistributeCardLog IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
 
                 logger.Info("end addDistributeCardLog");
             }
@@ -4626,11 +4805,11 @@ namespace TrueVMS
                     //MediaTimeline timeline = new MediaTimeline(new Uri(fileUrl));
                     //timeline.RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever;
                     //MediaClock clock = timeline.CreateClock();
-                    
+
                     //clock.CurrentStateInvalidated += Clock_CurrentStateInvalidated;
                     //clock.CurrentTimeInvalidated += Clock_CurrentTimeInvalidated;
                     //homeVideo.Clock = clock;
-                    
+
                     homeVideo.Source = new Uri(fileUrl);
                     homeVideo.Visibility = Visibility.Visible;
                     //homeVideo.Loop = true;
@@ -4668,7 +4847,7 @@ namespace TrueVMS
         private void panelEnterIDCardOrPassport_TouchDown(object sender, TouchEventArgs e)
         {
             if (fullKeyboardPopup.IsOpen && !keyboardJustOpen)
-            {                
+            {
                 panelFullKeyboardPopup.Visibility = Visibility.Hidden;
                 fullKeyboardPopup.IsOpen = false;
             }
@@ -4682,13 +4861,20 @@ namespace TrueVMS
             {
 
                 if (IS_DEBUG)
-                    logger.Info("getWorkPermitDetail :"+workpermitID);
+                    logger.Info("getWorkPermitDetail :" + workpermitID);
 
                 var client = new RestClient(SERVER_API_URL + "/api/kiosk/GetWorkpermit/" + workpermitID);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
+                try
+                {
+                    logger.Info("getWorkPermitDetail StatusCode :" + response.StatusCode.ToString());
+                    logger.Info("getWorkPermitDetail ContentLength :" + response.ContentLength);
+                    logger.Info("getWorkPermitDetail IsSuccessful :" + response.IsSuccessful);
+                }
+                catch { }
 
                 WorkpermitVw m = JsonConvert.DeserializeObject<WorkpermitVw>(response.Content);
 
@@ -4751,12 +4937,12 @@ namespace TrueVMS
                     if (IS_DEBUG)
                         MessageBox.Show("Feed card open comm. port error, Application can not start.");
 
-                    if(!IS_DEBUG)
+                    if (!IS_DEBUG)
                         Application.Current.Shutdown();
-                    
+
                 }
 
-        
+
             }
             catch (Exception ex)
             {
@@ -4764,7 +4950,7 @@ namespace TrueVMS
 
 
                 if (IS_DEBUG)
-                    MessageBox.Show("Application can not start :"+ ex.ToString());
+                    MessageBox.Show("Application can not start :" + ex.ToString());
 
                 if (!IS_DEBUG)
                     Application.Current.Shutdown();
@@ -4773,7 +4959,8 @@ namespace TrueVMS
 
         private void keepCard()
         {
-            if(HandComm != 0) {
+            if (HandComm != 0)
+            {
 
                 Int32 I;
                 Byte DeviceAddr;
@@ -4871,7 +5058,8 @@ namespace TrueVMS
 
                 if (I == 0)
                 {
-                    if (RxReplyType == 80) {
+                    if (RxReplyType == 80)
+                    {
                         String S1, S2, S3;
                         S1 = "";
                         S2 = "";
@@ -4879,15 +5067,16 @@ namespace TrueVMS
 
                         returnValue = RxStCode0;
 
-                        switch (RxStCode0) {
+                        switch (RxStCode0)
+                        {
                             case 48:
                                 S1 = "No card in card channel";
                                 break;
                             case 49:
-                                S1 = "There is card at front side"; 
+                                S1 = "There is card at front side";
                                 break;
                             case 50:
-                                S1 = "There is card at RF/IC card operation position"; 
+                                S1 = "There is card at RF/IC card operation position";
                                 break;
                         }
                         /*
@@ -4972,7 +5161,7 @@ namespace TrueVMS
                     logger.Error("Move Card Error", "Move Card");
             }
             else
-                logger.Error("Comm. port is not Opened", "Caution");           
+                logger.Error("Comm. port is not Opened", "Caution");
 
         }
 
@@ -5068,7 +5257,7 @@ namespace TrueVMS
                         ActionLogModel model = newActionLogModel();
                         model.Event = "QRCode Reader";
                         model.SubEvent = "QRCode Missmatch";
-                        model.Description = "QRCode '" + qrCode + "' is not match to id/passport :" + this.idCardOrPassportNumber + ", not correct count "+ IDCARD_NOT_CORRECT_COUNT;
+                        model.Description = "QRCode '" + qrCode + "' is not match to id/passport :" + this.idCardOrPassportNumber + ", not correct count " + IDCARD_NOT_CORRECT_COUNT;
                         var task = Task.Run(async () => await addActionLog(model));
 
                         logger.Info("QRCode '" + qrCode + "' is not match to id/passport :" + hideIdCard(this.idCardOrPassportNumber) + ", not correct count " + IDCARD_NOT_CORRECT_COUNT);
@@ -5101,7 +5290,7 @@ namespace TrueVMS
                             {
                                 alertWindow.setMessage("Error", "Your data is not correct 5 times", "Please contact administrator");
                             }
-                            
+
                             alertWindow.ShowDialog();
 
                             ShowEntryPanel();
@@ -5349,17 +5538,17 @@ namespace TrueVMS
                     List<MLocationFloor> devideID = null;
                     devideID = getDeviceIDByProject(Convert.ToString(w.CustProjectId));
                     string rooms = roomFromDevide(devideID);
-                    
+
                     w.Location = rooms;
                     projectLstBox.Items.Insert(i++, w);
                 }
 
-                
+
             }
 
         }
 
-        
+
 
         private void loadWorkpermitToList()
         {
@@ -5439,7 +5628,7 @@ namespace TrueVMS
 
             foreach (CustProjectVw w in ALL_PROJECT)
             {
-                if(w.CustProjectId == selectProject.CustProjectId)
+                if (w.CustProjectId == selectProject.CustProjectId)
                 {
                     PROJECT = w;
                 }
@@ -5450,12 +5639,12 @@ namespace TrueVMS
             decimal ver = 0;
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
-                if(STAFFEMER.TcVersion!=null)
+                if (STAFFEMER.TcVersion != null)
                     ver = STAFFEMER.TcVersion.Value;
             }
             else
             {
-                if(STAFF.TcVersion!=null)
+                if (STAFF.TcVersion != null)
                     ver = STAFF.TcVersion.Value;
             }
 
@@ -5527,7 +5716,8 @@ namespace TrueVMS
 
         private void Op_Completed(object sender, EventArgs e)
         {
-            try { 
+            try
+            {
                 var op2 = App.Current.Dispatcher.BeginInvoke(
                    System.Windows.Threading.DispatcherPriority.Background,
                    new NextPrimeDelegate(this.connectReturnCardDll));
@@ -5563,7 +5753,7 @@ namespace TrueVMS
 
         private void btnReturnCard_TouchDown(object sender, TouchEventArgs e)
         {
-            
+
             try
             {
                 logger.Info("Click return card button");
@@ -5579,9 +5769,10 @@ namespace TrueVMS
                 //op.Completed += Op_Completed;
                 //op.
 
-               
+
             }
-            catch (Exception ex){
+            catch (Exception)
+            {
 
                 if (LANGUAGE == LANGUAGE_THAI)
                 {
@@ -5627,7 +5818,7 @@ namespace TrueVMS
             {
                 btnReturnCard.IsEnabled = true;
             }*/
-            
+
         }
 
         private void panelSelectWorkpermit_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -5702,10 +5893,10 @@ namespace TrueVMS
         {
             CURRENT_PANEL.Visibility = Visibility.Hidden;
 
-            if (reader != null)
-            {
-                reader.Close();
-            }
+            //if (reader != null)
+            //{
+            //    reader.Close();
+            //}
 
             ShowEntryPanel();
         }
