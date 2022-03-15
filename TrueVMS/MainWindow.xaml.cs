@@ -3292,16 +3292,19 @@ namespace TrueVMS
         private void btnNext_panelTC_TouchDown(object sender, TouchEventArgs e)
         {
             string email = "";
+            long CustStaffId = 0;
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
+                CustStaffId = STAFFEMER.CustStaffId;
             }
             else
             {
                 email = STAFF.CustStaffEmail;
+                CustStaffId = STAFF.CustStaffId;
             }
 
-            addTcPrivacyAccept(1, 0, LAST_TC_TH.Version, email);
+            addTcPrivacyAccept(1, 0, LAST_TC_TH.Version, email, CustStaffId);
 
 
             if (WORKING_TYPE == WORKING_TYPE_CUSTOMER)
@@ -4316,21 +4319,25 @@ namespace TrueVMS
 
             string email = "";
             decimal ver = 0;
+            long CustStaffId = 0;
+
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
+                CustStaffId = STAFFEMER.CustStaffId;
                 if (STAFFEMER.PrivacySensitiveVersion != null)
                     ver = STAFFEMER.PrivacySensitiveVersion.Value;
             }
             else
             {
                 email = STAFF.CustStaffEmail;
+                CustStaffId = STAFF.CustStaffId;
                 if (STAFF.PrivacySensitiveVersion != null)
                     ver = STAFF.PrivacySensitiveVersion.Value;
             }
 
 
-            addTcPrivacyAccept(2, 0, LAST_PRIVACY_MARKETING_TH.Version, email);
+            addTcPrivacyAccept(2, 0, LAST_PRIVACY_MARKETING_TH.Version, email, CustStaffId);
 
             if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver)
             {
@@ -4347,9 +4354,11 @@ namespace TrueVMS
 
             string email = "";
             decimal ver = 0;
+            long CustStaffId = 0;
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
+                CustStaffId = STAFFEMER.CustStaffId;
 
                 if (STAFFEMER.PrivacySensitiveVersion != null)
                     ver = STAFFEMER.PrivacySensitiveVersion.Value;
@@ -4357,12 +4366,13 @@ namespace TrueVMS
             else
             {
                 email = STAFF.CustStaffEmail;
+                CustStaffId = STAFF.CustStaffId;
                 if (STAFF.PrivacySensitiveVersion != null)
                     ver = STAFF.PrivacySensitiveVersion.Value;
             }
 
 
-            addTcPrivacyAccept(2, 2, LAST_PRIVACY_MARKETING_TH.Version, email);
+            addTcPrivacyAccept(2, 2, LAST_PRIVACY_MARKETING_TH.Version, email, CustStaffId);
             if (Convert.ToDecimal(LAST_PRIVACY_SENSITIVE_TH.Version) > ver)
             {
                 ShowPanelPrivacySensitive();
@@ -4377,16 +4387,19 @@ namespace TrueVMS
         {
 
             string email = "";
+            long CustStaffId = 0;
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
+                CustStaffId = STAFFEMER.CustStaffId;
             }
             else
             {
                 email = STAFF.CustStaffEmail;
+                CustStaffId = STAFF.CustStaffId;
             }
 
-            addTcPrivacyAccept(3, 0, LAST_PRIVACY_SENSITIVE_TH.Version, email);
+            addTcPrivacyAccept(3, 0, LAST_PRIVACY_SENSITIVE_TH.Version, email, CustStaffId);
             ShowPanelWelcomeToTrueIDC();
         }
 
@@ -4394,16 +4407,19 @@ namespace TrueVMS
         {
 
             string email = "";
+            long CustStaffId = 0;
             if (WORKING_TYPE == WORKING_TYPE_WALKIN)
             {
                 email = STAFFEMER.CustStaffEmail;
+                CustStaffId = STAFFEMER.CustStaffId;
             }
             else
             {
                 email = STAFF.CustStaffEmail;
+                CustStaffId = STAFF.CustStaffId;
             }
 
-            addTcPrivacyAccept(3, 2, LAST_PRIVACY_SENSITIVE_TH.Version, email);
+            addTcPrivacyAccept(3, 2, LAST_PRIVACY_SENSITIVE_TH.Version, email, CustStaffId);
             ShowPanelWelcomeToTrueIDC();
         }
 
@@ -4517,11 +4533,11 @@ namespace TrueVMS
          * 1=NotAccept
          * 2=Skip         
          */
-        private void addTcPrivacyAccept(int doctype, int action, string version, string email)
+        private void addTcPrivacyAccept(int doctype, int action, string version, string email, long CustStaffId)
         {
             try
             {
-                logger.Info("Start addTcPrivacyAccept doctype" + doctype + " action:" + action + " version :" + version + " email :" + email);
+                logger.Info("Start addTcPrivacyAccept doctype" + doctype + " action:" + action + " version :" + version + " email :" + email + " CustStaffId :" + CustStaffId);
 
                 String logTime = convertDatetime(DateTime.Now);  //DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -4544,6 +4560,8 @@ namespace TrueVMS
                 @"    ""Action"":""" + action + @""",
 " + "\n" +
                 @"    ""ActionDate"":""" + logTime + @""",
+" + "\n" +
+                @"    ""CustStaffId"":""" + CustStaffId + @""",
 " + "\n" +
                 @"    ""ActionChanel"":""1""
 " + "\n" +
